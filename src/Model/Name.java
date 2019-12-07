@@ -1,18 +1,24 @@
 package Model;
 
+import javax.persistence.Basic;
+import javax.persistence.Embeddable;
+
+@Embeddable
 public class Name {
     private String firstName;
     private String midName;
     private String lastName;
     private String fullName;
 
-    public Name(String firstName, String midName, String lastName) {
+    public Name() { }
+    public Name(String firstName, String midName, String lastName){
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
         this.fullName = getFullName();
     }
 
+    @Basic
     public String getFirstName() {
         return firstName;
     }
@@ -21,6 +27,8 @@ public class Name {
         this.firstName = firstName;
     }
 
+
+    @Basic
     public String getMidName() {
         return midName;
     }
@@ -29,6 +37,8 @@ public class Name {
         this.midName = midName;
     }
 
+
+    @Basic
     public String getLastName() {
         return lastName;
     }
@@ -37,12 +47,12 @@ public class Name {
         this.lastName = lastName;
     }
 
-    public String getFullName(){
+    public String fullName(){
         return String.format("%s %s %s", firstName, midName, lastName);
     }
 
     @Override
     public String toString() {
-        return getFullName();
+        return fullName();
     }
 }

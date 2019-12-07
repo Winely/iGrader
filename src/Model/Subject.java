@@ -1,69 +1,46 @@
 package Model;
 
-import java.util.*;
+import javax.persistence.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class Subject extends Commentable {
-    private String label;
-    private Score maxScore = new Score(100, 0);
+@Entity
+public class Subject extends BaseEntity implements Commentable{
+    private int id;
+    private String label = "";
     private double weight;
-    private Date issuedDate;
-    private Date dueDate;
+    private Map<String, Grade> grades;
+    private Subject parent;
     private List<Subject> children;
-    private Map<Student, Score> grades = new HashMap<>();
+    private Score maxScore = new Score(100, 0);
+    private String comment = "";
 
-    public Subject(String label, double weight) {
-        this.label = label;
-        this.weight = weight;
-    }
-
-    public Score getScore(Student student){
-        if (children == null){
-            return grades.getOrDefault(student, Score.ZERO)
-                    .times(100*weight/(maxScore.getPoints()));
+    public Score getScoreByStudentId(String studentId){
+        if (children.isEmpty()){
+            return grades.get(studentId).getScore()
+                    .times(100*weight/(maxScore.getPoint()));
         }
         return children.stream()
-                .map(part -> part.getScore(student))
+                .map(child -> child.getScoreByStudentId(studentId))
                 .reduce(Score::addScore)
                 .orElse(Score.ZERO)
                 .times(weight);
     }
 
-    public void setScore(Student student, Score score){
-        if (children != null){
-            // TODO: throw an error
-            return;
-        }
-        if (score.isOver(maxScore)){
-            // TODO: throw an error
-            return;
-        }
-        grades.put(student, score);
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
+    public int getId() {
+        return id;
     }
 
-    public void addChild(Subject child){
-        if (children == null){
-            children = new ArrayList<>();   // lazy init
-        }
-        children.add(child);
+    public void setId(int id) {
+        this.id = id;
     }
 
-    // Getters and Setters
-    public List<Subject> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Subject> children) {
-        this.children = children;
-    }
-
-    public Map<Student, Score> getGrades() {
-        return grades;
-    }
-
-    public void setGrades(Map<Student, Score> grades) {
-        this.grades = grades;
-    }
-
+    @Basic
+    @Column(name = "label", nullable = false, length = 255)
     public String getLabel() {
         return label;
     }
@@ -72,14 +49,8 @@ public class Subject extends Commentable {
         this.label = label;
     }
 
-    public Score getMaxScore() {
-        return maxScore;
-    }
-
-    public void setMaxScore(Score maxScore) {
-        this.maxScore = maxScore;
-    }
-
+    @Basic
+    @Column(name = "weight", nullable = false, precision = 0)
     public double getWeight() {
         return weight;
     }
@@ -88,19 +59,60 @@ public class Subject extends Commentable {
         this.weight = weight;
     }
 
-    public Date getIssuedDate() {
-        return issuedDate;
+    @Basic
+    @Column(name = "comment", nullable = false, length = 255)
+    public String getComment() {
+        return comment;
     }
 
-    public void setIssuedDate(Date issuedDate) {
-        this.issuedDate = issuedDate;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public Date getDueDate() {
-        return dueDate;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, label, maxScore, weight, comment);
     }
 
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
+    @MapKey(name = "student")
+    @OneToMany(mappedBy = "subject")
+    public Map<String, Grade> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Map<String, Grade> grades) {
+        this.grades = grades;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "parent", referencedColumnName = "id")
+    public Subject getParent() {
+        return parent;
+    }
+
+    public void setParent(Subject parent) {
+        this.parent = parent;
+    }
+
+    @OneToMany(mappedBy = "parent")
+    public List<Subject> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Subject> children) {
+        this.children = children;
+    }
+
+    @Embedded
+    @AttributeOverrides(value = {
+            @AttributeOverride(name = "point", column = @Column(name = "maxpoint", nullable = false, precision = 0)),
+            @AttributeOverride(name = "bonus", column = @Column(name = "maxbonus", nullable = false, precision = 0))
+    })
+    public Score getMaxScore() {
+        return maxScore;
+    }
+
+    public void setMaxScore(Score maxScore) {
+        this.maxScore = maxScore;
     }
 }

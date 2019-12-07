@@ -2,3 +2,5 @@
 .idea
 *.DS_Store
 out/
+hibernate.cfg.xml
+lib/
