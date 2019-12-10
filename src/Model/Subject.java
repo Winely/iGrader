@@ -28,6 +28,12 @@ public class Subject extends BaseEntity implements Commentable{
                 .times(weight);
     }
 
+    public Score getFinalScoreByStudent(Student student){
+        Score total = getScoreByStudentId(student.getId());
+        total.setPoint(total.getPoint() + student.getSection().getCurve());
+        return total;
+    }
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
