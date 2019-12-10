@@ -11,6 +11,7 @@ public class Section extends BaseEntity{
     private int id;
     private String label;
     private Course course;
+    private double curve;
     private Collection<Student> students;
 
     public Section() {}
@@ -67,5 +68,14 @@ public class Section extends BaseEntity{
 
     public void setStudents(Collection<Student> students) {
         this.students = students;
+    }
+
+    @Basic
+    public double getCurve() {
+        return curve;
+    }
+
+    public void setCurve(double curve) {
+        this.curve = curve;
     }
 }

@@ -72,4 +72,15 @@ public class Student extends BaseEntity implements Commentable{
     public void setName(Name name) {
         this.name = name;
     }
+
+    private boolean frozen;
+
+    @Basic
+    public boolean isFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
+    }
 }
