@@ -33,7 +33,7 @@ public class Course extends BaseEntity{
         this.scheme = scheme;
     }
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     public List<Section> getSections() {
         return sections;
     }

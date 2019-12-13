@@ -1,35 +1,41 @@
 package Model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Subject extends BaseEntity implements Commentable{
     private int id;
     private String label = "";
     private double weight;
-    private Map<String, Grade> grades;
+    private Map<Student, Grade> grades;
     private Subject parent;
     private List<Subject> children;
     private Score maxScore = new Score(100, 0);
     private String comment = "";
 
-    public Score getScoreByStudentId(String studentId){
+    public Subject(){}
+    public Subject(String label){
+        this.label = label;
+    }
+
+    public Score getScoreByStudent(Student student){
         if (children.isEmpty()){
-            return grades.get(studentId).getScore()
+            return grades.get(student).getScore()
                     .times(100*weight/(maxScore.getPoint()));
         }
         return children.stream()
-                .map(child -> child.getScoreByStudentId(studentId))
+                .map(child -> child.getScoreByStudent(student))
                 .reduce(Score::addScore)
                 .orElse(Score.ZERO)
                 .times(weight);
     }
 
     public Score getFinalScoreByStudent(Student student){
-        Score total = getScoreByStudentId(student.getId());
+        Score total = getScoreByStudent(student);
         total.setPoint(total.getPoint() + student.getSection().getCurve());
         return total;
     }
@@ -80,13 +86,13 @@ public class Subject extends BaseEntity implements Commentable{
         return Objects.hash(id, label, maxScore, weight, comment);
     }
 
-    @MapKey(name = "student")
-    @OneToMany(mappedBy = "subject")
-    public Map<String, Grade> getGrades() {
+    @MapKeyJoinColumn(name = "student")
+    @OneToMany(mappedBy = "subject", fetch = FetchType.EAGER)
+    public Map<Student, Grade> getGrades() {
         return grades;
     }
 
-    public void setGrades(Map<String, Grade> grades) {
+    public void setGrades(Map<Student, Grade> grades) {
         this.grades = grades;
     }
 
@@ -101,6 +107,7 @@ public class Subject extends BaseEntity implements Commentable{
     }
 
     @OneToMany(mappedBy = "parent")
+    @LazyCollection(LazyCollectionOption.FALSE)
     public List<Subject> getChildren() {
         return children;
     }

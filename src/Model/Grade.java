@@ -10,6 +10,13 @@ public class Grade extends BaseEntity implements Commentable{
     private Subject subject;
     private Student student;
 
+    public Grade(){}
+    public Grade(Student student, Subject subject, Score score){
+        this.student = student;
+        this.subject = subject;
+        this.score = score;
+    }
+
     @Basic
     @Column(name = "comment", nullable = false)
     public String getComment() {
