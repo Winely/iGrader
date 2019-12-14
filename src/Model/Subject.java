@@ -11,9 +11,9 @@ public class Subject extends BaseEntity implements Commentable{
     private int id;
     private String label = "";
     private double weight;
-    private Map<Student, Grade> grades;
+    private Map<Student, Grade> grades = new HashMap<>();
     private Subject parent;
-    private List<Subject> children;
+    private List<Subject> children = new ArrayList<>();
     private Score maxScore = new Score(100, 0);
     private String comment = "";
 
@@ -127,5 +127,27 @@ public class Subject extends BaseEntity implements Commentable{
 
     public void setMaxScore(Score maxScore) {
         this.maxScore = maxScore;
+    }
+
+    public Subject duplicateSubject() {
+        Subject copy = new Subject();
+        copy.setLabel(label);
+        copy.setWeight(weight);
+        copy.setMaxScore(maxScore);
+
+        if (parent != null) {
+//            copyParent.setLabel(parent.label);
+//            copyParent.setWeight(parent.weight);
+            copy.parent = parent.duplicateSubject();
+        }
+
+        for (Subject child: children) {
+
+            Subject copyChild = child.duplicateSubject();
+            copyChild.parent = copy;
+
+        }
+
+        return copy;
     }
 }

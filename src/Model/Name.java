@@ -8,12 +8,14 @@ public class Name {
     private String firstName;
     private String midName;
     private String lastName;
+    private String fullName;
 
     public Name() { }
     public Name(String firstName, String midName, String lastName){
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
+        this.fullName = fullName();
     }
 
     @Basic
