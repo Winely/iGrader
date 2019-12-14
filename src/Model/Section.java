@@ -68,4 +68,8 @@ public class Section extends BaseEntity{
     public void setStudents(Collection<Student> students) {
         this.students = students;
     }
+
+    public void addStudent(Student student) {
+        students.add(student);
+    }
 }

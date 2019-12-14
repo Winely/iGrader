@@ -15,7 +15,7 @@ public class Name {
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
-        this.fullName = getFullName();
+        this.fullName = fullName();
     }
 
     @Basic

@@ -1,16 +1,47 @@
 package View.components;
 
-import Model.Class;
+import Database.DAO;
+import Model.Course;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import sample.Main;
 
-public class ClassSelect extends ComboBox<Class> {
+import java.util.ArrayList;
+
+public class ClassSelect extends ComboBox<Course> {
+
+    private DAO dao = new DAO();
 
     public ClassSelect() {
-        ObservableList<Class> myComboBoxData = FXCollections.observableArrayList();
-        myComboBoxData.addAll(Main.classes);
-        setItems(myComboBoxData);
+        ObservableList<Course> courseList = FXCollections.observableArrayList();
+        ArrayList<Course> courses = (ArrayList<Course>) DAO.query("from Course");
+        if (courses.size() == 0) {
+            setItems(courseList);
+        } else {
+            courseList.addAll(courses);
+            setCellFactory(courseListView -> new CourseListCell());
+            setButtonCell(new CourseListCell());
+            setItems(courseList);
+        }
+    }
+
+    public void addListItem(Course course) {
+        getItems().add(course);
+    }
+
+    class CourseListCell extends ListCell<Course> {
+
+        @Override
+        protected void updateItem(Course course, boolean empty) {
+            super.updateItem(course, empty) ;
+            if (empty) {
+                setText(null);
+            } else {
+                setText(course.getScheme().getLabel());
+            }
+        }
     }
 }

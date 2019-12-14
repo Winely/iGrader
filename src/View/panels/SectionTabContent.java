@@ -18,6 +18,8 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
     private Button importBtn = new Button("Import CSV");
     private Button stats = new Button("Statistics");
 
+    private SectionTable sectionTable;
+
     public SectionTabContent(Section section) {
         this.section = section;
         addStudent.setOnAction(this);
@@ -26,12 +28,12 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
         withdraw.setOnAction(this);
         importBtn.setOnAction(this);
         stats.setOnAction(this);
+        sectionTable = new SectionTable(this.section);
         setupTabContent();
     }
 
 
     private void setupTabContent() {
-        SubjectTable sectionTable = new SubjectTable(section);
         ToolBar studentToolbar = createStudentToolbar();
         setCenter(sectionTable);
         setBottom(studentToolbar);

@@ -1,18 +1,16 @@
 package Model;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Subject extends BaseEntity implements Commentable{
     private int id;
     private String label = "";
     private double weight;
-    private Map<String, Grade> grades;
+    private Map<String, Grade> grades = new HashMap<>();
     private Subject parent;
-    private List<Subject> children;
+    private List<Subject> children = new ArrayList<>();
     private Score maxScore = new Score(100, 0);
     private String comment = "";
 
@@ -114,5 +112,27 @@ public class Subject extends BaseEntity implements Commentable{
 
     public void setMaxScore(Score maxScore) {
         this.maxScore = maxScore;
+    }
+
+    public Subject duplicateSubject() {
+        Subject copy = new Subject();
+        copy.setLabel(label);
+        copy.setWeight(weight);
+        copy.setMaxScore(maxScore);
+
+        if (parent != null) {
+//            copyParent.setLabel(parent.label);
+//            copyParent.setWeight(parent.weight);
+            copy.parent = parent.duplicateSubject();
+        }
+
+        for (Subject child: children) {
+
+            Subject copyChild = child.duplicateSubject();
+            copyChild.parent = copy;
+
+        }
+
+        return copy;
     }
 }

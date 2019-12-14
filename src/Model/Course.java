@@ -1,13 +1,14 @@
 package Model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Course extends BaseEntity{
     private int id;
-    private Subject scheme;
-    private List<Section> sections;
+    private Subject scheme = new Subject();
+    private List<Section> sections = new ArrayList<>();
 
     public Course() {
     }
@@ -40,5 +41,9 @@ public class Course extends BaseEntity{
 
     public void setSections(List<Section> sections) {
         this.sections = sections;
+    }
+
+    public void addSection(Section section) {
+        this.sections.add(section);
     }
 }

@@ -30,8 +30,7 @@ public class LoginPanel extends Scene {
 
     private void pressLogin(ActionEvent event) {
         if (this.passcode.getText().equals(Main.passcode)) {
-            warning.setText("Correct");
-//            Main.handle(event);
+            Main.handle(Main.LOGIN);
         } else {
             warning.setText("Incorrect passcode, try again");
         }
