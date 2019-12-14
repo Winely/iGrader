@@ -7,7 +7,7 @@ import java.util.List;
 @Entity
 public class Course extends BaseEntity{
     private int id;
-    private Subject scheme = new Subject();
+    private Subject scheme;
     private List<Section> sections = new ArrayList<>();
 
     public Course() {
@@ -34,7 +34,7 @@ public class Course extends BaseEntity{
         this.scheme = scheme;
     }
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
     public List<Section> getSections() {
         return sections;
     }
@@ -45,5 +45,10 @@ public class Course extends BaseEntity{
 
     public void addSection(Section section) {
         this.sections.add(section);
+    }
+
+    @Override
+    public String toString() {
+        return scheme.getLabel();
     }
 }

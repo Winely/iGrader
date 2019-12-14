@@ -20,7 +20,8 @@ public class CourseController {
     }
 
     public void addSection(Course course) {
-        String label = "Section " + course.getSections().size();
+        int num = course.getSections().size()+1;
+        String label = "Section " + num;
         Section section = new Section();
         section.setCourse(course);
         section.setLabel(label);

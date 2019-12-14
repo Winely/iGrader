@@ -9,6 +9,7 @@ public class Student extends BaseEntity implements Commentable{
     private String comment = "";
     private boolean isGrad;
     private Section section;
+    private boolean frozen;
 
     public Student() {
     }
@@ -71,5 +72,32 @@ public class Student extends BaseEntity implements Commentable{
 
     public void setName(Name name) {
         this.name = name;
+    }
+
+    @Basic
+    public boolean isFrozen() {
+        return frozen;
+    }
+
+    public void setFrozen(boolean frozen) {
+        this.frozen = frozen;
+    }
+
+    /***
+     * Returning a new student object from the data line like
+     * "U123456,Alice,D,AA,false"
+     */
+    public static Student fromCSVLine(String line){
+        try {
+            String[] values = line.split(",");
+            String id = values[0];
+            String firstName = values[1];
+            String midName = values[2];
+            String lastName = values[3];
+            boolean isGrad = Boolean.parseBoolean(values[4]);
+            return new Student(id, new Name(firstName, midName, lastName), isGrad);
+        } catch (Exception e){
+            return null;
+        }
     }
 }

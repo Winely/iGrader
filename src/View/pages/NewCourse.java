@@ -15,7 +15,7 @@ import sample.Main;
 public class NewCourse extends Scene {
     private CourseController courseController = new CourseController();
 
-    private TextField courseName = new TextField();
+    private TextField courseName = new TextField("");
     private Label warning = new Label();
     private ClassSelect classSelect = new ClassSelect();
 
@@ -46,12 +46,12 @@ public class NewCourse extends Scene {
     private void pressConfirm(ActionEvent event) {
         Course selected = classSelect.getValue();
         String name = courseName.getText();
-        System.out.println(selected);
         if (selected == null) {
             courseController.createNewCourse(name, new Subject());
             Main.handle(Main.LOGIN);
         } else {
             courseController.createNewCourse(name, selected.getScheme());
+            Main.handle(Main.LOGIN);
         }
     }
 

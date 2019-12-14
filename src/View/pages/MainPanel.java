@@ -39,6 +39,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
         edit.setOnAction(this);
         removeClass.setOnAction(this);
         addSection.setOnAction(this);
+        classSelect.setOnAction(this);
 
         layout.setTop(toolbar);
         layout.setCenter(tabPane);
@@ -53,6 +54,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
 
     private void setupTabs() {
         Course c = classSelect.getValue();
+        tabPane.getTabs().clear();
         if (c != null) {
             for (int i = 0; i < c.getSections().size(); i++) {
                 Section section = c.getSections().get(i);
@@ -62,38 +64,6 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
             }
         }
     }
-
-//    private void makeDummyData(Course c) {
-//        Section section1 = new Section("A1");
-//        Section section2 = new Section("A2");
-//        Subject scheme = new Subject();
-//        Subject hw = new Subject();
-//        hw.setLabel("HW");
-//        Subject exams = new Subject();
-//        exams.setLabel("Exams");
-//        scheme.getChildren().add(hw);
-//        scheme.getChildren().add(exams);
-//        section1.setCourse(c);
-//        section2.setCourse(c);
-//        c.addSection(section1);
-//        c.addSection(section2);
-//        c.setScheme(scheme);
-//
-//        scheme.save();
-//        c.save();
-//        section1.save();
-//        section2.save();
-//
-//        Name name1 = new Name("Dummy", "Dum", "Dum");
-//        Student stu1 = new Student("U12345678", name1, false);
-//        Name name2 = new Name("Silly", "Willy", "Student");
-//        Student stu2 = new Student("U87654321", name2, false);
-//
-//        section1.addStudent(stu1);
-//        section2.addStudent(stu2);
-//
-//    }
-
 
     private ToolBar createClassToolbar() {
         if (classSelect.getValue() != null) {
@@ -117,35 +87,10 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
             Course selected = classSelect.getValue();
             courseController.addSection(selected);
             Main.handle(Main.LOGIN);
+        } else if (event.getSource() == classSelect) {
+            setupTabs();
         }
 
     }
 
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

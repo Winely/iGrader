@@ -10,7 +10,7 @@ Put here anything useful for development
 3. Create a table in database:
 ```mysql
 CREATE DATABASE igrader;
-USE TABLE igrader;
+USE igrader;
 ```
 4. Init the database with our scheme: Run code in [PonyORM](https://editor.ponyorm.com/user/donggu/Grading_Sys/mysql)
 
@@ -52,8 +52,8 @@ stu.save();
 
 ### Read
 ```javaFind
-Database dao = new Database();
-Student stu = Database().findById(Student.class, "U123456789");
+DAO dao = new DAO();
+Student stu = DAO().findById(Student.class, "U123456789");
 ```
 
 ### Update (update database)

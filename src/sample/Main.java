@@ -1,5 +1,8 @@
 package sample;
 
+import Database.DAO;
+import Model.Course;
+import Model.Subject;
 import View.pages.LoginPanel;
 import View.pages.MainPanel;
 import View.pages.NewCourse;
@@ -24,6 +27,8 @@ public class Main extends Application {
     public static final String LOGIN = "Log In";
     public static final String SETTINGS = "Settings";
     public static final String NEW_COURSE = "New Course";
+    public static Course EMPTY = new Course();
+    public static Subject EMPTY_SUB = new Subject();
 
     public static String passcode;
     private static Stage window;
@@ -35,6 +40,10 @@ public class Main extends Application {
         Scanner sc = new Scanner(file);
         while (sc.hasNextLine())
             passcode = sc.nextLine();
+
+        // setup empty class (just a dummy class for list options
+        EMPTY_SUB.setLabel("New Template");
+        EMPTY.setScheme(EMPTY_SUB);
 
         window = primaryStage;
         primaryStage.setTitle("iGrader");

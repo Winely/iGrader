@@ -11,7 +11,8 @@ public class Section extends BaseEntity{
     private int id;
     private String label;
     private Course course;
-    private Collection<Student> students;
+    private double curve;
+    private List<Student> students;
 
     public Section() {}
 
@@ -60,16 +61,21 @@ public class Section extends BaseEntity{
         this.course = course;
     }
 
-    @OneToMany(mappedBy = "section")
-    public Collection<Student> getStudents() {
+    @OneToMany(mappedBy = "section", fetch = FetchType.EAGER)
+    public List<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Collection<Student> students) {
+    public void setStudents(List<Student> students) {
         this.students = students;
     }
 
-    public void addStudent(Student student) {
-        students.add(student);
+    @Basic
+    public double getCurve() {
+        return curve;
+    }
+
+    public void setCurve(double curve) {
+        this.curve = curve;
     }
 }
