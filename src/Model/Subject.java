@@ -110,7 +110,7 @@ public class Subject extends BaseEntity implements Commentable{
         this.parent = parent;
     }
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<Subject> getChildren() {
         return children;

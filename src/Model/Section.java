@@ -61,7 +61,7 @@ public class Section extends BaseEntity{
         this.course = course;
     }
 
-    @OneToMany(mappedBy = "section", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "section", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     public List<Student> getStudents() {
         return students;
     }

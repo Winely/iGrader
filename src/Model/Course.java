@@ -24,7 +24,7 @@ public class Course extends BaseEntity{
         this.id = id;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "scheme", referencedColumnName = "id", nullable = false)
     public Subject getScheme() {
         return scheme;
@@ -34,7 +34,7 @@ public class Course extends BaseEntity{
         this.scheme = scheme;
     }
 
-    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "course", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     public List<Section> getSections() {
         return sections;
     }

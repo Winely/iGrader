@@ -63,14 +63,14 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
         alert.setContentText("Are you sure you want to remove this student? All data on this student will be lost");
         alert.showAndWait();
         if (alert.getResult() == ButtonType.OK) {
-            Student toRemove = sectionTable.getSelectionModel().getSelectedItem().student;
+            Student toRemove = sectionTable.getSelectionModel().getSelectedItem().studentProperty().getValue();
             new DAO().delete(Student.class, toRemove.getId());
             section.refresh();
         }
     }
 
     private void withdrawStudent() {
-        Student toWithdraw = sectionTable.getSelectionModel().getSelectedItem().student;
+        Student toWithdraw = sectionTable.getSelectionModel().getSelectedItem().studentProperty().getValue();
         toWithdraw.setFrozen(true);
         toWithdraw.update();
     }
