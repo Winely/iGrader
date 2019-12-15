@@ -24,9 +24,9 @@ public class SectionEntry {
         pullSubjectInfo();
     }
 
-    private void pullSubjectInfo() {
+    private void pullSubjectInfo() {\
         for (Subject subject: scheme.getChildren()) {
-            Grade grade = subject.getGrades().get(student);
+            Grade grade = subject.getGrades().get(student.getValue());
             scoreMap.put(subject.getLabel(), grade);
         }
     }
