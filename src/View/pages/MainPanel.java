@@ -70,7 +70,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
     }
 
     private ToolBar createClassToolbar() {
-        if (classSelect.getValue() != null) {
+        if (classSelect.getValue() == null) {
             return null;
         }
         ToolBar bottom = new ToolBar();
@@ -80,6 +80,11 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
 
     private static void openEditPanel(Subject subject) {
         new SchemeEditPanel(subject);
+    }
+
+    public void selectClass(Course course){
+        classSelect.setValue(course);
+        handle(new ActionEvent(classSelect, null));
     }
 
     @Override

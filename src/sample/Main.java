@@ -69,8 +69,12 @@ public class Main extends Application {
                 mainPanel.setupTabs();
                 window.setScene(mainPanel);
                 break;
-
         }
+    }
+
+    public static void courseAdded(Course course){
+        handle(LOGIN);
+        mainPanel.selectClass(course);
     }
 
     public static void main(String[] args) {
