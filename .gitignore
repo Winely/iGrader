@@ -4,3 +4,4 @@
 out/
 hibernate.cfg.xml
 lib/
+/bin/

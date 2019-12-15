@@ -22,16 +22,20 @@ public class Subject extends BaseEntity implements Commentable{
         this.label = label;
     }
 
-    public Score getScoreByStudent(Student student){
+    public Score getScoreByStudent(Student student) {
         if (children.isEmpty()){
-            return grades.get(student).getScore()
-                    .times(100*weight/(maxScore.getPoint()));
+            Grade grade = grades.get(student);
+            if (grade == null) {
+                return new Score(0, 0);
+            }
+            return grade.getScore()
+                    .times(10000/(maxScore.getPoint())/(maxScore.getPoint()));
         }
         return children.stream()
-                .map(child -> child.getScoreByStudent(student))
+                .map(child -> child.getScoreByStudent(student).times(child.getWeight()/100))
                 .reduce(Score::addScore)
                 .orElse(Score.ZERO)
-                .times(weight);
+                .times(10000/(maxScore.getPoint())/(maxScore.getPoint()));
     }
 
     public Score getFinalScoreByStudent(Student student){
@@ -106,7 +110,7 @@ public class Subject extends BaseEntity implements Commentable{
         this.parent = parent;
     }
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     public List<Subject> getChildren() {
         return children;
@@ -134,18 +138,12 @@ public class Subject extends BaseEntity implements Commentable{
         copy.setLabel(label);
         copy.setWeight(weight);
         copy.setMaxScore(maxScore);
-
-        if (parent != null) {
-//            copyParent.setLabel(parent.label);
-//            copyParent.setWeight(parent.weight);
-            copy.parent = parent.duplicateSubject();
-        }
+        copy.save();
 
         for (Subject child: children) {
-
             Subject copyChild = child.duplicateSubject();
             copyChild.parent = copy;
-
+            copyChild.update();
         }
 
         return copy;

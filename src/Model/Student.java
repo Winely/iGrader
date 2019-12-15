@@ -74,6 +74,11 @@ public class Student extends BaseEntity implements Commentable{
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name.toString();
+    }
+
     @Basic
     public boolean isFrozen() {
         return frozen;

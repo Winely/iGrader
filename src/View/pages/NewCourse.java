@@ -17,7 +17,7 @@ public class NewCourse extends Scene {
 
     private TextField courseName = new TextField("");
     private Label warning = new Label();
-    private ClassSelect classSelect = new ClassSelect();
+    private ClassSelect classSelect = new ClassSelect(true);
 
     public NewCourse(GridPane layout) {
         super(layout, 500, 250);
