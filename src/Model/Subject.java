@@ -22,9 +22,13 @@ public class Subject extends BaseEntity implements Commentable{
         this.label = label;
     }
 
-    public Score getScoreByStudent(Student student){
+    public Score getScoreByStudent(Student student) {
         if (children.isEmpty()){
-            return grades.get(student).getScore()
+            Grade grade = grades.get(student);
+            if (grade == null) {
+                return new Score(0, 0);
+            }
+            return grade.getScore()
                     .times(100*weight/(maxScore.getPoint()));
         }
         return children.stream()

@@ -27,11 +27,12 @@ public class Main extends Application {
     public static final String LOGIN = "Log In";
     public static final String SETTINGS = "Settings";
     public static final String NEW_COURSE = "New Course";
+    public static final String UPDATE = "Update";
     public static Course EMPTY = new Course();
     public static Subject EMPTY_SUB = new Subject();
 
     public static String passcode;
-    private static Stage window;
+    public static Stage window;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -54,13 +55,18 @@ public class Main extends Application {
     public static void handle(String description) {
         switch (description) {
             case LOGIN:
-                window.setScene(new MainPanel(new BorderPane()));
+                mainPanel = new MainPanel(new BorderPane());
+                window.setScene(mainPanel);
                 break;
             case SETTINGS:
                 window.setScene(settingsPanel);
                 break;
             case NEW_COURSE:
                 window.setScene(newCourse);
+                break;
+            case UPDATE:
+                mainPanel.setupTabs();
+                window.setScene(mainPanel);
                 break;
 
         }

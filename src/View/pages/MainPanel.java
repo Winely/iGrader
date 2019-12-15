@@ -52,7 +52,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
     }
 
 
-    private void setupTabs() {
+    public void setupTabs() {
         Course c = classSelect.getValue();
         tabPane.getTabs().clear();
         if (c != null) {
@@ -86,7 +86,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
         } else if (event.getSource() == addSection) {
             Course selected = classSelect.getValue();
             courseController.addSection(selected);
-            Main.handle(Main.LOGIN);
+            setupTabs();
         } else if (event.getSource() == classSelect) {
             setupTabs();
         }

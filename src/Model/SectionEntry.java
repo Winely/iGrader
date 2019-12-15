@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class SectionEntry {
 
-    private Student student;
-    private Subject scheme;
+    public Student student;
+    public Subject scheme;
     public Name name;
-    public Map<String, Score> scoreMap = new HashMap<>();
+    public Map<String, Grade> scoreMap = new HashMap<>();
 
     public SectionEntry(Student student, Subject scheme) {
         this.student = student;
@@ -19,11 +19,12 @@ public class SectionEntry {
 
     private void pullSubjectInfo() {
         for (Subject subject: scheme.getChildren()) {
-            Score score = new Score(85.0, 0.0);
-//                Score score = subject.getScoreByStudentId(student);
-            scoreMap.put(subject.getLabel(), score);
+            Grade grade = subject.getGrades().get(student);
+            scoreMap.put(subject.getLabel(), grade);
         }
     }
 
-
+    public Student getStudent() {
+        return student;
+    }
 }
