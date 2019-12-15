@@ -26,7 +26,13 @@ public class SectionEntry {
 
     private void pullSubjectInfo() {
         for (Subject subject: scheme.getChildren()) {
-            Grade grade = subject.getGrades().get(student.getValue());
+            Grade grade;
+            if (subject.getChildren().size() == 0) {
+                grade = subject.getGrades().getOrDefault(student.getValue(), new Grade(student.getValue(), subject, Score.ZERO));
+            } else {
+                Score score = subject.getScoreByStudent(student.getValue());
+                grade = new Grade(student.getValue(), subject, score);
+            }
             scoreMap.put(subject.getLabel(), grade);
         }
     }

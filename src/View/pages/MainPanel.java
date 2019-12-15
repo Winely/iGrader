@@ -22,7 +22,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
 
     private ToolBar toolbar = new ToolBar();
     private TabPane tabPane = new TabPane();
-    private ClassSelect classSelect = new ClassSelect();
+    private ClassSelect classSelect = new ClassSelect(false);
     private Button newCourse = new Button("New Class");
     private Button settings = new Button("Settings");
 
@@ -103,6 +103,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
             courseController.addSection(selected);
             setupTabs();
         } else if (event.getSource() == classSelect) {
+            createClassToolbar();
             setupTabs();
         } else if (event.getSource() == edit) {
             Subject scheme = classSelect.getValue().getScheme();

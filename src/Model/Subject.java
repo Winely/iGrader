@@ -24,17 +24,12 @@ public class Subject extends BaseEntity implements Commentable{
 
     public Score getScoreByStudent(Student student) {
         if (children.isEmpty()){
-//<<<<<<< HEAD
             Grade grade = grades.get(student);
             if (grade == null) {
                 return new Score(0, 0);
             }
             return grade.getScore()
                     .times(10000/(maxScore.getPoint())/(maxScore.getPoint()));
-//=======
-//            return grades.get(student).getScore()
-//                    .times(10000/(maxScore.getPoint())/(maxScore.getPoint()));
-//>>>>>>> Aleks
         }
         return children.stream()
                 .map(child -> child.getScoreByStudent(student).times(child.getWeight()/100))
@@ -143,18 +138,12 @@ public class Subject extends BaseEntity implements Commentable{
         copy.setLabel(label);
         copy.setWeight(weight);
         copy.setMaxScore(maxScore);
-
-        if (parent != null) {
-//            copyParent.setLabel(parent.label);
-//            copyParent.setWeight(parent.weight);
-            copy.parent = parent.duplicateSubject();
-        }
+        copy.save();
 
         for (Subject child: children) {
-
             Subject copyChild = child.duplicateSubject();
             copyChild.parent = copy;
-
+            copyChild.update();
         }
 
         return copy;

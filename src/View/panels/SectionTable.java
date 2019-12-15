@@ -67,6 +67,7 @@ public class SectionTable extends TableView<SectionEntry> {
             TableColumn<SectionEntry, Grade> subCol = new TableColumn<>(label);
             subCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().scoreMap.get(label)));
             subCol.setSortable(false);
+            subCol.setPrefWidth(100.0);
 
             makeHeader(subCol, label, i);
 

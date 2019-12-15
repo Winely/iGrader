@@ -14,10 +14,12 @@ public class ClassSelect extends ComboBox<Course> {
 
     private DAO dao = new DAO();
 
-    public ClassSelect() {
+    public ClassSelect(boolean showEmpty) {
         ObservableList<Course> courseList = FXCollections.observableArrayList();
         ArrayList<Course> coursesQuery = (ArrayList<Course>) DAO.query("from Course");
-        coursesQuery.add(Main.EMPTY);
+        if (showEmpty) {
+            coursesQuery.add(Main.EMPTY);
+        }
         courseList.addAll(coursesQuery);
         setItems(courseList);
     }

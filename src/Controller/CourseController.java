@@ -17,8 +17,8 @@ public class CourseController {
         Course course = new Course();
         Subject newSubject = template.duplicateSubject();
         newSubject.setLabel(label);
+        newSubject.update();
         course.setScheme(newSubject);
-        newSubject.save();
         course.save();
     }
 
