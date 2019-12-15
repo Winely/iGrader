@@ -1,8 +1,11 @@
 package Controller;
 
+import Database.DAO;
 import Model.Course;
 import Model.Section;
 import Model.Subject;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import sample.Main;
 
 import java.util.ArrayList;
@@ -29,4 +32,11 @@ public class CourseController {
         course.refresh();
     }
 
+    public static void removeSection(Section section) {
+        new DAO().delete(Section.class, section.getId());
+    }
+
+    public static void removeCourse(Course course){
+        new DAO().delete(Course.class, course.getId());
+    }
 }

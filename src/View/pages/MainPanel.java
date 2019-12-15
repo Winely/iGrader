@@ -6,6 +6,7 @@ import Model.Course;
 import View.components.ClassSelect;
 import View.panels.SectionTabContent;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -13,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import sample.Main;
 
 
-public class MainPanel extends Scene implements EventHandler<ActionEvent> {
+public class MainPanel extends Scene implements EventHandler<ActionEvent>{
 
     private CourseController courseController = new CourseController();
 
@@ -58,9 +59,10 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
         if (c != null) {
             for (int i = 0; i < c.getSections().size(); i++) {
                 Section section = c.getSections().get(i);
-                Tab tabI = new Tab(section.getLabel());
-                tabI.setContent(new SectionTabContent(section));
-                tabPane.getTabs().add(tabI);
+                Tab tab = new Tab(section.getLabel());
+                tab.setContent(new SectionTabContent(section));
+                tab.setOnCloseRequest(new RemoveSectionHandler(section));
+                tabPane.getTabs().add(tab);
             }
         }
     }
@@ -82,7 +84,14 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
         } else if (event.getSource() == settings) {
             Main.handle(Main.SETTINGS);
         } else if (event.getSource() == removeClass) {
-            System.out.println("removeClass");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setContentText("All students and grades under this course will be removed. Are you sure?");
+            alert.showAndWait();
+            if (alert.getResult() == ButtonType.OK) {
+                CourseController.removeCourse(classSelect.getValue());
+            } else {
+                event.consume();
+            }
         } else if (event.getSource() == addSection) {
             Course selected = classSelect.getValue();
             courseController.addSection(selected);
@@ -90,7 +99,28 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent> {
         } else if (event.getSource() == classSelect) {
             setupTabs();
         }
-
     }
 
+}
+
+class RemoveSectionHandler implements EventHandler<Event> {
+    private Section section;
+    public RemoveSectionHandler() {
+    }
+
+    public RemoveSectionHandler(Section section) {
+        this.section = section;
+    }
+
+    @Override
+    public void handle(Event event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("All students and grades under this section will be removed. Are you sure?");
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+            CourseController.removeSection(section);
+        } else {
+            event.consume();
+        }
+    }
 }

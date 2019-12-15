@@ -1,15 +1,23 @@
 package View.panels;
 import Model.*;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.ObjectBinding;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import sample.Main;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class SectionTable extends TableView<SectionEntry> {
 
@@ -17,7 +25,6 @@ public class SectionTable extends TableView<SectionEntry> {
 
     public SectionTable(Section section) {
         super();
-//        this.section = section;
         this.scheme = section.getCourse().getScheme();
 
         System.out.println(section.getStudents());
@@ -28,6 +35,7 @@ public class SectionTable extends TableView<SectionEntry> {
             System.out.println(student);
             entries.add(new SectionEntry(student, scheme));
         }
+        entries.sort(Comparator.comparing(SectionEntry::isFrozen));
 
         ArrayList<TableColumn> columns = new ArrayList<>();
         // create name column
@@ -49,6 +57,19 @@ public class SectionTable extends TableView<SectionEntry> {
         }
         setItems(entries);
         getSelectionModel().setCellSelectionEnabled(true);
+
+        this.setRowFactory(tv -> {
+            TableRow<SectionEntry> row = new TableRow<>();
+            final BooleanProperty isFrozen = new SimpleBooleanProperty(true);
+            final BooleanBinding frozen = row.itemProperty().isNotNull().and(
+                    Bindings.selectBoolean(row.itemProperty(), "frozen"));
+            row.disableProperty().bind(frozen);
+            row.styleProperty().bind(Bindings
+                    .when(frozen.isEqualTo(isFrozen))
+                    .then("-fx-background-color: darkgrey")
+                    .otherwise(""));
+            return row;
+        });
 
         setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
