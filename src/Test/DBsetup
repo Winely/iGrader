@@ -1,0 +1,63 @@
+CREATE TABLE `subject` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `label` VARCHAR(255) NOT NULL,
+  `maxpoint` DOUBLE NOT NULL,
+  `maxbonus` DOUBLE NOT NULL,
+  `weight` DOUBLE NOT NULL,
+  `parent` INTEGER,
+  `comment` VARCHAR(255) NOT NULL
+);
+
+CREATE INDEX `idx_subject__parent` ON `subject` (`parent`);
+
+ALTER TABLE `subject` ADD CONSTRAINT `fk_subject__parent` FOREIGN KEY (`parent`) REFERENCES `subject` (`id`) ON DELETE SET NULL;
+
+CREATE TABLE `course` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `scheme` INTEGER NOT NULL
+);
+
+CREATE INDEX `idx_course__scheme` ON `course` (`scheme`);
+
+ALTER TABLE `course` ADD CONSTRAINT `fk_course__scheme` FOREIGN KEY (`scheme`) REFERENCES `subject` (`id`);
+
+CREATE TABLE `section` (
+  `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+  `label` VARCHAR(255) NOT NULL,
+  `course` INTEGER NOT NULL,
+  `curve` DOUBLE NOT NULL
+);
+
+CREATE INDEX `idx_section__course` ON `section` (`course`);
+
+ALTER TABLE `section` ADD CONSTRAINT `fk_section__course` FOREIGN KEY (`course`) REFERENCES `course` (`id`) ON DELETE CASCADE;
+
+CREATE TABLE `student` (
+  `id` VARCHAR(255) PRIMARY KEY,
+  `section` INTEGER NOT NULL,
+  `comment` VARCHAR(255) NOT NULL,
+  `isgrad` BOOLEAN NOT NULL,
+  `firstname` VARCHAR(255) NOT NULL,
+  `midname` VARCHAR(255) NOT NULL,
+  `lastname` VARCHAR(255) NOT NULL,
+  `frozen` BOOLEAN NOT NULL
+);
+
+CREATE INDEX `idx_student__section` ON `student` (`section`);
+
+ALTER TABLE `student` ADD CONSTRAINT `fk_student__section` FOREIGN KEY (`section`) REFERENCES `section` (`id`) ON DELETE CASCADE;
+
+CREATE TABLE `grade` (
+  `subject` INTEGER NOT NULL,
+  `student` VARCHAR(255) NOT NULL,
+  `point` DOUBLE,
+  `bonus` DOUBLE NOT NULL,
+  `comment` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`subject`, `student`)
+);
+
+CREATE INDEX `idx_grade__student` ON `grade` (`student`);
+
+ALTER TABLE `grade` ADD CONSTRAINT `fk_grade__student` FOREIGN KEY (`student`) REFERENCES `student` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `grade` ADD CONSTRAINT `fk_grade__subject` FOREIGN KEY (`subject`) REFERENCES `subject` (`id`) ON DELETE CASCADE;

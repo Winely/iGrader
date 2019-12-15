@@ -40,7 +40,7 @@ public class Score implements Comparable<Score>{
     }
 
     public Score times(double weight){
-        return new Score(point *weight, bonus);
+        return new Score(point * weight, bonus);
     }
 
     public boolean isOver(Score o) {
