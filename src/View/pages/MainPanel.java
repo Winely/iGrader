@@ -3,6 +3,8 @@ package View.pages;
 import Controller.CourseController;
 import Model.*;
 import Model.Course;
+import Panels.SchemeEditPanel;
+import Panels.StatisticsPanel;
 import View.components.ClassSelect;
 import View.panels.SectionTabContent;
 import javafx.event.ActionEvent;
@@ -76,6 +78,10 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
         return bottom;
     }
 
+    private static void openEditPanel(Subject subject) {
+        new SchemeEditPanel(subject);
+    }
+
     @Override
     public void handle(ActionEvent event) {
 
@@ -98,6 +104,9 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
             setupTabs();
         } else if (event.getSource() == classSelect) {
             setupTabs();
+        } else if (event.getSource() == edit) {
+            Subject scheme = classSelect.getValue().getScheme();
+            openEditPanel(scheme);
         }
     }
 

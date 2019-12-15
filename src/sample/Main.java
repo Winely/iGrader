@@ -8,14 +8,13 @@ import View.pages.MainPanel;
 import View.pages.NewCourse;
 import View.pages.SettingsPanel;
 import javafx.application.Application;
-import javafx.scene.Scene;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main extends Application {
@@ -28,6 +27,7 @@ public class Main extends Application {
     public static final String SETTINGS = "Settings";
     public static final String NEW_COURSE = "New Course";
     public static final String UPDATE = "Update";
+    public static final String EDIT = "Edit";
     public static Course EMPTY = new Course();
     public static Subject EMPTY_SUB = new Subject();
 
@@ -36,6 +36,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        FXMLLoader.load(getClass().getResource("sample.fxml"));
         // setup passcode
         File file = new File("src/config.txt");
         Scanner sc = new Scanner(file);

@@ -4,6 +4,7 @@ import Controller.ImportStudentController;
 import Database.DAO;
 import Model.Section;
 import Model.Student;
+import Panels.StatisticsPanel;
 import View.pages.MainPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -82,6 +83,10 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
         section.refresh();
     }
 
+    private static void openStats(Section section) {
+        new StatisticsPanel(section);
+    }
+
 
     @Override
     public void handle(ActionEvent event) {
@@ -99,6 +104,7 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
             importStudents(section);
             Main.handle(Main.UPDATE);
         } else if (event.getSource() == stats) {
+            openStats(section);
             System.out.println("stats");
         }
     }
