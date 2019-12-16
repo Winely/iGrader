@@ -12,7 +12,7 @@ import java.util.List;
 public class ClassSelect extends ComboBox<Course> {
     public ClassSelect(boolean showEmpty) {
         ObservableList<Course> courseList = FXCollections.observableArrayList();
-        List<Course> coursesQuery = (List<Course>) DAO.query("from Course");
+        List<Course> coursesQuery = (List<Course>) new DAO().query("from Course");
         if (showEmpty) {
             coursesQuery.add(Main.EMPTY);
         }
