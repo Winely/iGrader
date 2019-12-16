@@ -174,18 +174,22 @@ public class EditAssignmentGradesController {
     public void setSubject(int subjectID, Section section) {
         subject = new DAO().findById(Subject.class, subjectID);
         List<Student> included = new ArrayList<Student>();
-        System.out.println(subject.getGrades());
         Map<Student, Grade> record = subject.getGrades();
+        System.out.println(included);
         for(Map.Entry<Student, Grade> entry : record.entrySet()) {
+        	if(section.getStudents().contains(entry.getKey())) {
+                System.out.println(entry.getKey());
+
         	if(!entry.getKey().isFrozen()) {
             realData.add(new Record(entry.getKey(),entry.getValue()));
             included.add(entry.getKey());
-        	}
+        	}}
         }
         for(Student i: section.getStudents()) {
         	if(!included.contains(i))
         	{
         		if(!i.isFrozen()) {
+        			System.out.println(i);
         		realData.add(new Record(i, new Grade(i,subject,Score.ZERO)));
         		}
         	}
