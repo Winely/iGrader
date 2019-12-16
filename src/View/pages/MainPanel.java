@@ -99,6 +99,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
             alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
                 CourseController.removeCourse(classSelect.getValue());
+                Main.handle(Main.LOGIN);
             } else {
                 event.consume();
             }

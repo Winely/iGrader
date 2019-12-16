@@ -1,16 +1,15 @@
 package Controller;
 
 import Database.DAO;
-import Model.Grade;
-import Model.Name;
-import Model.Student;
-import Model.Subject;
+import Model.*;
+import View.pages.AssignmentChildrenGrades;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.Main;
 
@@ -36,6 +35,7 @@ public class EditIndividualGradeController {
 
     private int gradeWay = 1;
     private Subject subject;
+    private Section section;
     private Student student;
     private Stage dialogStage;
 
@@ -63,7 +63,7 @@ public class EditIndividualGradeController {
 
     @FXML
     private void pressBack() {
-        Main.handle(Main.UPDATE);
+        navBack(subject, section);
     }
 
     @FXML
@@ -91,8 +91,18 @@ public class EditIndividualGradeController {
         subject.getGrades().get(student).setComment(commentArea.getText());
         subject.update();
         subject.getGrades().get(student).update();
-        Main.handle(Main.UPDATE);
+
+        navBack(subject, section);
     }
+
+    private static void navBack(Subject subject, Section section) {
+        if (subject.getParent().getParent() == null) {
+            Main.handle(Main.UPDATE);
+        } else {
+            Main.window.setScene(new AssignmentChildrenGrades(new BorderPane(), section, subject.getParent()));
+        }
+    }
+
 
     public void setSubject(int subjectID, String studentID) {
         subject = new DAO().findById(Subject.class, subjectID);
@@ -102,6 +112,10 @@ public class EditIndividualGradeController {
                 student = a.getKey();
         }
         showStudentInformation();
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
     }
 
     private boolean isInputValid() {

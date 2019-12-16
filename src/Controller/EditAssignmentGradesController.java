@@ -4,6 +4,7 @@ import java.util.Map;
 
 import Database.DAO;
 import Model.*;
+import View.pages.AssignmentChildrenGrades;
 import View.panels.SectionTable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -19,6 +20,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.Main;
 
@@ -57,6 +59,7 @@ public class EditAssignmentGradesController {
 
     private Stage dialogStage;
     private Subject subject;
+    private Section section;
     private ObservableList<Record> recordData = FXCollections.observableArrayList();;
     private ObservableList<Record> realData = FXCollections.observableArrayList();;
 
@@ -117,7 +120,7 @@ public class EditAssignmentGradesController {
     }
     @FXML
     private void pressBack() {
-        Main.handle(Main.UPDATE);
+        navBack(subject, section);
     }
 
     @FXML
@@ -148,8 +151,16 @@ public class EditAssignmentGradesController {
         }
         subject.setComment(commentsArea.getText());
         subject.update();
-        Main.handle(Main.UPDATE);
+        navBack(subject, section);
 
+    }
+
+    private static void navBack(Subject subject, Section section) {
+        if (subject.getParent().getParent() == null) {
+            Main.handle(Main.UPDATE);
+        } else {
+            Main.window.setScene(new AssignmentChildrenGrades(new BorderPane(), section, subject.getParent()));
+        }
     }
 
     public void setSubject(int subjectID) {
@@ -167,6 +178,10 @@ public class EditAssignmentGradesController {
         recordTable.setItems(recordData);
         showStudentInformation();
 
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
     }
 
     public void showStudentInformation() {
