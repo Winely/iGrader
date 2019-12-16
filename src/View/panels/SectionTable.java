@@ -122,7 +122,7 @@ public class SectionTable extends TableView<SectionEntry> {
                             Main.setFxmlPane(page);
                             Main.handle(Main.ASSIGNMENTGRADES);
                             EditAssignmentGradesController controller = loader.getController();
-                            controller.setSubject(subId);
+                            controller.setSubject(subId,section);
                             controller.setDialogStage(Main.getStage());
                         }
                     }
@@ -151,7 +151,7 @@ public class SectionTable extends TableView<SectionEntry> {
                             Main.setFxmlPane(page);
                             Main.handle(Main.ASSIGNMENTGRADES);
                             EditAssignmentGradesController controller = loader.getController();
-                            controller.setSubject(subId);
+                            controller.setSubject(subId,section);
                             controller.setDialogStage(Main.getStage());
                         }
                     }

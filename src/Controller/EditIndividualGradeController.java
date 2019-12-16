@@ -43,19 +43,29 @@ public class EditIndividualGradeController {
     @FXML
     private void percentWay() {
         gradeWay = -1;
+    	if(subject.getGrades().containsKey(student))
+    	{
         gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint()/subject.getMaxScore().getPoint()));
         if(subject.getMaxScore().getBonus() != 0) // otherwise /0 = NAN
             bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus()/subject.getMaxScore().getBonus()));
         else
             bonuesField.setText(String.valueOf(0.0));
-
+    	}else {
+    		gradeField.setText(String.valueOf(0));
+                bonuesField.setText(String.valueOf(0.0));	
+    	}
     }
     @FXML
     private void lostWay() {
         gradeWay = 0;
+    	if(subject.getGrades().containsKey(student))
+    	{
         gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint() - subject.getMaxScore().getPoint()));
         bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus() - subject.getMaxScore().getBonus()));
-
+    	}else {
+            gradeField.setText(String.valueOf(0 - subject.getMaxScore().getPoint()));
+            bonuesField.setText(String.valueOf(0 - subject.getMaxScore().getBonus()));
+    	}
     }
 
     @FXML
@@ -66,9 +76,14 @@ public class EditIndividualGradeController {
     @FXML
     private void rawWay() {
         gradeWay = 1;
+    	if(subject.getGrades().containsKey(student))
+    	{
         gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint()));
         bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus()));
-
+    	}else {
+    		gradeField.setText("0");
+            bonuesField.setText("0");
+    	}
     }
     @FXML
     private void handleSave() {

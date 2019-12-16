@@ -1,5 +1,7 @@
 package Controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import Database.DAO;
@@ -125,19 +127,36 @@ public class EditAssignmentGradesController {
         if(isInputValid()) {
             if(gradeWay == -1) {
                 for(Record i:recordTable.getItems()) {
+                	if(subject.getGrades().get(i.getStudent()) == null) {
+                		i.getGrade().setScore(new Score(subject.getMaxScore().getPoint() * i.getGrade().getScore().getPoint(),subject.getMaxScore().getBonus() * i.getGrade().getScore().getBonus()));
+                		subject.getGrades().put(i.getStudent(), i.getGrade());
+                		 subject.getGrades().get(i.getStudent()).save();
+                	}else {
                     subject.getGrades().get(i.getStudent()).setScore(new Score(subject.getMaxScore().getPoint() * i.getGrade().getScore().getPoint(),subject.getMaxScore().getBonus() * i.getGrade().getScore().getBonus()));
                     subject.getGrades().get(i.getStudent()).update();
+                    }
                 }
             } else if(gradeWay == 0)
             {
                 for(Record i:recordTable.getItems()) {
+                	if(subject.getGrades().get(i.getStudent()) == null) {
+                		i.getGrade().setScore(new Score(subject.getMaxScore().getPoint() + i.getGrade().getScore().getPoint(),subject.getMaxScore().getBonus() + i.getGrade().getScore().getBonus()));
+                		subject.getGrades().put(i.getStudent(), i.getGrade());
+                		 subject.getGrades().get(i.getStudent()).save();
+                	}else {
                     subject.getGrades().get(i.getStudent()).setScore(new Score(subject.getMaxScore().getPoint() + i.getGrade().getScore().getPoint(),subject.getMaxScore().getBonus() + i.getGrade().getScore().getBonus()));
                     subject.getGrades().get(i.getStudent()).update();
+                	}
                 }
             } else {
                 for(Record i:recordTable.getItems()) {
-                    subject.getGrades().get(i.getStudent()).setScore(i.getGrade().getScore());
-                    subject.getGrades().get(i.getStudent()).update();
+                	if(subject.getGrades().get(i.getStudent()) == null) {
+                		subject.getGrades().put(i.getStudent(), i.getGrade());
+                		 subject.getGrades().get(i.getStudent()).save();
+                	}else {
+                		subject.getGrades().get(i.getStudent()).setScore(i.getGrade().getScore());
+                        subject.getGrades().get(i.getStudent()).update();
+                	}
                 }
             }
         }
@@ -152,11 +171,24 @@ public class EditAssignmentGradesController {
 
     }
 
-    public void setSubject(int subjectID) {
+    public void setSubject(int subjectID, Section section) {
         subject = new DAO().findById(Subject.class, subjectID);
+        List<Student> included = new ArrayList<Student>();
+        System.out.println(subject.getGrades());
         Map<Student, Grade> record = subject.getGrades();
         for(Map.Entry<Student, Grade> entry : record.entrySet()) {
+        	if(!entry.getKey().isFrozen()) {
             realData.add(new Record(entry.getKey(),entry.getValue()));
+            included.add(entry.getKey());
+        	}
+        }
+        for(Student i: section.getStudents()) {
+        	if(!included.contains(i))
+        	{
+        		if(!i.isFrozen()) {
+        		realData.add(new Record(i, new Grade(i,subject,Score.ZERO)));
+        		}
+        	}
         }
         for(Record i : realData)
         {
