@@ -3,6 +3,10 @@ package Controller;
 import Database.DAO;
 import Model.*;
 import View.pages.AssignmentChildrenGrades;
+import Model.Grade;
+import Model.Score;
+import Model.Student;
+import Model.Subject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -12,11 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.Main;
-
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.Hibernate;
 
 
 public class EditIndividualGradeController {
@@ -46,19 +45,29 @@ public class EditIndividualGradeController {
     @FXML
     private void percentWay() {
         gradeWay = -1;
+    	if(subject.getGrades().containsKey(student))
+    	{
         gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint()/subject.getMaxScore().getPoint()));
         if(subject.getMaxScore().getBonus() != 0) // otherwise /0 = NAN
             bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus()/subject.getMaxScore().getBonus()));
         else
             bonuesField.setText(String.valueOf(0.0));
-
+    	}else {
+    		gradeField.setText(String.valueOf(0));
+                bonuesField.setText(String.valueOf(0.0));	
+    	}
     }
     @FXML
     private void lostWay() {
         gradeWay = 0;
+    	if(subject.getGrades().containsKey(student))
+    	{
         gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint() - subject.getMaxScore().getPoint()));
         bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus() - subject.getMaxScore().getBonus()));
-
+    	}else {
+            gradeField.setText(String.valueOf(0 - subject.getMaxScore().getPoint()));
+            bonuesField.setText(String.valueOf(0 - subject.getMaxScore().getBonus()));
+    	}
     }
 
     @FXML
@@ -69,28 +78,39 @@ public class EditIndividualGradeController {
     @FXML
     private void rawWay() {
         gradeWay = 1;
+    	if(subject.getGrades().containsKey(student))
+    	{
         gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint()));
         bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus()));
-
+    	}else {
+    		gradeField.setText("0");
+            bonuesField.setText("0");
+    	}
     }
     @FXML
     private void handleSave() {
+        boolean isNew = !subject.getGrades().containsKey(student);
+        Grade grade = isNew ? new Grade(student, subject, new Score(0, 0)) : subject.getGrades().get(student);
         if(isInputValid()) {
+            double point = Double.parseDouble(gradeField.getText());
+            double bonus = Double.parseDouble(bonuesField.getText());
             if(gradeWay == -1) {
-                subject.getGrades().get(student).getScore().setPoint(Double.valueOf(gradeField.getText()) * subject.getMaxScore().getPoint());
-                subject.getGrades().get(student).getScore().setBonus(Double.valueOf(bonuesField.getText()) * subject.getMaxScore().getBonus());
+                grade.getScore().setPoint(point * subject.getMaxScore().getPoint());
+                grade.getScore().setBonus(bonus * subject.getMaxScore().getBonus());
             } else if(gradeWay == 0)
             {
-                subject.getGrades().get(student).getScore().setPoint(subject.getMaxScore().getPoint() + Double.valueOf(gradeField.getText()));
-                subject.getGrades().get(student).getScore().setBonus(subject.getMaxScore().getBonus() + Double.valueOf(bonuesField.getText()));
+                grade.getScore().setPoint(subject.getMaxScore().getPoint() + point);
+                grade.getScore().setBonus(subject.getMaxScore().getBonus() + bonus);
             } else {
-                subject.getGrades().get(student).getScore().setPoint(Double.valueOf(gradeField.getText()));
-                subject.getGrades().get(student).getScore().setBonus(Double.valueOf(bonuesField.getText()));
+                grade.getScore().setPoint(point);
+                grade.getScore().setBonus(bonus);
             }
         }
-        subject.getGrades().get(student).setComment(commentArea.getText());
-        subject.update();
-        subject.getGrades().get(student).update();
+        grade.setComment(commentArea.getText());
+        if (isNew) grade.save();
+        else grade.update();
+        subject.refresh();
+        Main.handle(Main.UPDATE);
 
         navBack(subject, section);
     }
@@ -103,14 +123,9 @@ public class EditIndividualGradeController {
         }
     }
 
-
-    public void setSubject(int subjectID, String studentID) {
-        subject = new DAO().findById(Subject.class, subjectID);
-        Map<Student, Grade> map= subject.getGrades();
-        for(Map.Entry<Student, Grade> a:map.entrySet()){
-            if(a.getKey().getId().equals(studentID))
-                student = a.getKey();
-        }
+    public void setSubject(Subject subject, Student student) {
+        this.subject = subject;
+        this.student = student;
         showStudentInformation();
     }
 
@@ -165,9 +180,10 @@ public class EditIndividualGradeController {
     public void showStudentInformation() {
         nameLabel.setText(student.getName().toString());
         assignmentLabel.setText(subject.getLabel());
-        gradeField.setText(String.valueOf(subject.getGrades().get(student).getScore().getPoint()));
+        Score score = subject.getScoreByStudent(student);
+        gradeField.setText(String.valueOf(score.getPoint()));
         maxGradeLabel.setText(String.valueOf(subject.getMaxScore().getPoint()));
-        bonuesField.setText(String.valueOf(subject.getGrades().get(student).getScore().getBonus()));
-        commentArea.setText(subject.getGrades().get(student).getComment());
+        bonuesField.setText(String.valueOf(score.getBonus()));
+        commentArea.setText(subject.getGrades().containsKey(student) ? subject.getGrades().get(student).getComment() : "");
     }
 }

@@ -77,9 +77,6 @@ public class AddStudentController {
         if (lastNameField.getText() == null || lastNameField.getText().length() == 0) {
             errorMessage += "No valid last name!\n";
         }
-        if (midNameField.getText() == null || midNameField.getText().length() == 0) {
-            errorMessage += "No valid mid name!\n";
-        }
         if (idField.getText() == null || idField.getText().length() == 0) {
             errorMessage += "No valid id!\n";
         }
