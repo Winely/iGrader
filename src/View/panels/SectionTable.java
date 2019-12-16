@@ -28,6 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import com.sun.javafx.scene.control.skin.LabeledText;
+
 public class SectionTable extends TableView<SectionEntry> {
 
     private Subject scheme;
@@ -95,7 +97,7 @@ public class SectionTable extends TableView<SectionEntry> {
             makeHeader(subCol, label);
             EventHandler<? super MouseEvent> handler = event -> {
                 int subId = -1;
-                if(((Text)event.getTarget()).getText() != null) {
+                if(event.getTarget().getClass() == LabeledText.class&&((Text)event.getTarget()).getText() != null) {
                     for (Subject subject: scheme.getChildren()) {
                         String sublabel = subject.getLabel();
 
