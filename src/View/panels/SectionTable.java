@@ -1,6 +1,10 @@
 package View.panels;
+import Controller.EditAssignmentGradesController;
+import Controller.EditIndividualGradeController;
+import Database.DAO;
 import Model.*;
 
+import View.pages.AssignmentChildrenGrades;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -9,13 +13,18 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import sample.Main;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -23,16 +32,14 @@ public class SectionTable extends TableView<SectionEntry> {
 
     private Subject scheme;
 
-    public SectionTable(Section section) {
+    public SectionTable(Section section, Subject scheme) {
         super();
-        this.scheme = section.getCourse().getScheme();
 
-        System.out.println(section.getStudents());
+        this.scheme = scheme;
 
         ObservableList<SectionEntry> entries = FXCollections.observableArrayList();
 
         for (Student student: section.getStudents()) {
-            System.out.println(student);
             entries.add(new SectionEntry(student, scheme));
         }
         entries.sort(Comparator.comparing(SectionEntry::isFrozen));
@@ -51,6 +58,7 @@ public class SectionTable extends TableView<SectionEntry> {
                     if (item == null) {
                         return;
                     }
+                    item.refresh();
                     setText( item.toString() );
                     setTooltip(new Tooltip(item.getComment()));
                 }
@@ -63,18 +71,8 @@ public class SectionTable extends TableView<SectionEntry> {
         for (int i = 0; i < scheme.getChildren().size(); i++) {
             Subject sub = scheme.getChildren().get(i);
             String label = sub.getLabel();
-            System.out.println(label);
             TableColumn<SectionEntry, Grade> subCol = new TableColumn<>(label);
             subCol.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().scoreMap.get(label)));
-            subCol.setSortable(false);
-            subCol.setPrefWidth(100.0);
-
-            makeHeader(subCol, label, i);
-
-            EventHandler<? super MouseEvent> handler = event -> {
-                System.out.println("Column clicked " + ((Node)event.getTarget()).getProperties().get("index"));
-            };
-            subCol.getGraphic().addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
 
             subCol.setCellFactory(column -> {
                 return new TableCell<SectionEntry, Grade>() {
@@ -90,6 +88,74 @@ public class SectionTable extends TableView<SectionEntry> {
                     }
                 };
             });
+
+            subCol.setSortable(false);
+            subCol.setPrefWidth(100.0);
+
+            makeHeader(subCol, label);
+            EventHandler<? super MouseEvent> handler = event -> {
+                int subId = -1;
+                if(((Text)event.getTarget()).getText() != null) {
+                    for (Subject subject: scheme.getChildren()) {
+                        String sublabel = subject.getLabel();
+
+                        if(sublabel.equals(((Text)event.getTarget()).getText()))
+                            subId = subject.getId();
+                    }
+                    if(subId != -1) {
+                        Subject subject = new DAO().findById(Subject.class, subId);
+                        if (subject.getChildren().size() > 0) {
+                            openAssignmentChildren(section, subject);
+                        } else {
+                            FXMLLoader loader = new FXMLLoader();
+                            loader.setLocation(getClass().getClassLoader().getResource("View/pages/EditAssignmentGrades.fxml"));
+                            AnchorPane page;
+                            try {
+                                page = (AnchorPane) loader.load();
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                                page = null;
+                            }
+                            Main.setFxmlPane(page);
+                            Main.handle(Main.ASSIGNMENTGRADES);
+                            EditAssignmentGradesController controller = loader.getController();
+                            controller.setSubject(subId);
+                            controller.setDialogStage(Main.getStage());
+                        }
+                    }
+                } else if(((Node)event.getTarget()).getProperties().get("Label") != null) {
+                    for (Subject subject: scheme.getChildren()) {
+                        String sublabel = subject.getLabel();
+
+                        if(sublabel.equals(((Node)event.getTarget()).getProperties().get("Label")))
+                            subId = subject.getId();
+                    }
+                    if(subId != 1) {
+                        Subject subject = new DAO().findById(Subject.class, subId);
+                        if (subject.getChildren().size() > 0) {
+                            openAssignmentChildren(section, subject);
+                        } else {
+                            FXMLLoader loader = new FXMLLoader();
+                            loader.setLocation(getClass().getClassLoader().getResource("View/pages/EditAssignmentGrades.fxml"));
+                            AnchorPane page;
+                            try {
+                                page = (AnchorPane) loader.load();
+                            } catch (IOException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                                page = null;
+                            }
+                            Main.setFxmlPane(page);
+                            Main.handle(Main.ASSIGNMENTGRADES);
+                            EditAssignmentGradesController controller = loader.getController();
+                            controller.setSubject(subId);
+                            controller.setDialogStage(Main.getStage());
+                        }
+                    }
+                }
+            };
+            subCol.getGraphic().addEventFilter(MouseEvent.MOUSE_CLICKED, handler);
 
             columns.add(subCol);
         }
@@ -126,20 +192,49 @@ public class SectionTable extends TableView<SectionEntry> {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 2) {
                     ObservableList<TablePosition> cells = getSelectionModel().getSelectedCells();
-                    System.out.println(getSelectionModel().getSelectedItem().name);
-                    System.out.println(getSelectionModel().getSelectedItem().scoreMap);
-                    System.out.println(cells.get(0).getColumn());
+
+                    int subId = 0;
+                    for (Subject sub: scheme.getChildren()) {
+                        String label = sub.getLabel();
+                        System.out.println(label);
+
+                        if(label.equals(getSelectionModel().getSelectedCells().get(0).getTableColumn().getGraphic().getProperties().get("Label")) )
+                            subId = sub.getId();
+                    }
+                    Subject subject = new DAO().findById(Subject.class, subId);
+                    if (subject.getChildren().size() > 0) {
+                        openAssignmentChildren(section, subject);
+                    } else {
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getClassLoader().getResource("View/pages/EditIndividualGrade.fxml"));
+                        AnchorPane page;
+                        try {
+                            page = (AnchorPane) loader.load();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                            page = null;
+                        }
+                        Main.setFxmlPane(page);
+                        Main.handle(Main.INDIVIDUALGRADE);
+                        EditIndividualGradeController controller = loader.getController();
+                        controller.setSubject(subId,getSelectionModel().getSelectedItem().getStudent().getId());
+                        controller.setDialogStage(Main.getStage());
+                    }
                 }
             }
         });
-
     }
 
-    private void makeHeader(TableColumn<?, ?> target, String name, int index) {
+    private void makeHeader(TableColumn<?, ?> target, String name) {
         VBox vBox = new VBox(new Label(name));
         vBox.setAlignment(Pos.CENTER);
-        vBox.getProperties().put("index", index);
+        vBox.getProperties().put("Label", name);
         target.setGraphic(vBox);
         target.setText("");
+    }
+
+    private static void openAssignmentChildren(Section section, Subject scheme) {
+        Main.window.setScene(new AssignmentChildrenGrades(new BorderPane(), section, scheme));
     }
 }

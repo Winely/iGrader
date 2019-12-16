@@ -4,12 +4,6 @@ import Database.DAO;
 import Model.Course;
 import Model.Section;
 import Model.Subject;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import sample.Main;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class CourseController {
 

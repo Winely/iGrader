@@ -9,12 +9,15 @@ import View.pages.NewCourse;
 import View.pages.SettingsPanel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.io.*;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main extends Application {
@@ -27,16 +30,20 @@ public class Main extends Application {
     public static final String SETTINGS = "Settings";
     public static final String NEW_COURSE = "New Course";
     public static final String UPDATE = "Update";
-    public static final String EDIT = "Edit";
+    public static final String NEW_STUDENT = "New Student";
+    public static final String STUDENT_COMMENT = "Student Comment";
+    public static final String INDIVIDUALGRADE = "Individual Grade";
+    public static final String ASSIGNMENTGRADES = "Assignment Grades";
     public static Course EMPTY = new Course();
     public static Subject EMPTY_SUB = new Subject();
 
     public static String passcode;
     public static Stage window;
 
+    private static AnchorPane current;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader.load(getClass().getResource("sample.fxml"));
         // setup passcode
         File file = new File("src/config.txt");
         Scanner sc = new Scanner(file);
@@ -51,6 +58,14 @@ public class Main extends Application {
         primaryStage.setTitle("iGrader");
         primaryStage.setScene(loginPanel);
         primaryStage.show();
+    }
+
+    public static void setFxmlPane(AnchorPane icurrent) {
+        current = icurrent;
+    }
+
+    public static Stage getStage() {
+        return window;
     }
 
     public static void handle(String description) {
@@ -69,7 +84,12 @@ public class Main extends Application {
                 mainPanel.setupTabs();
                 window.setScene(mainPanel);
                 break;
-
+            case NEW_STUDENT:
+            case STUDENT_COMMENT:
+            case INDIVIDUALGRADE:
+            case ASSIGNMENTGRADES:
+                window.setScene(new Scene(current));
+                break;
         }
     }
 

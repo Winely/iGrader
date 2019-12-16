@@ -1,13 +1,11 @@
-package Panels;
+package View.panels;
 
 import Model.Section;
-import Model.Subject;
-import javafx.fxml.FXML;
+import Controller.StatisticsPanelController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javax.persistence.*;
 
 public class StatisticsPanel extends Stage{
 
