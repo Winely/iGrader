@@ -1,7 +1,9 @@
 package Controller;
 
-import Database.DAO;
-import Model.*;
+import Model.Grade;
+import Model.Score;
+import Model.Student;
+import Model.Subject;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -10,11 +12,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import sample.Main;
-
-import java.util.List;
-import java.util.Map;
-
-import org.hibernate.Hibernate;
 
 
 public class EditIndividualGradeController {
