@@ -9,8 +9,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-import Controller.EditAssignmentGradesController.Record;
-
 public class SectionEntry {
     private final ObjectProperty<Student> student = new SimpleObjectProperty<>();
     private final BooleanProperty frozen = new SimpleBooleanProperty(false);
@@ -27,22 +25,14 @@ public class SectionEntry {
     }
 
     private void pullSubjectInfo() {
-        for (Subject subject: scheme.getChildren()) { 
-            Grade grade = new Grade(student.getValue(), subject, Score.ZERO);
-        	System.out.println(student.getValue());
-        	System.out.println(subject.getGrades().get(student.getValue()));
-
+        for (Subject subject: scheme.getChildren()) {
+            Grade grade;
             if (subject.getChildren().size() == 0) {
-            	Map<Student, Grade> record = subject.getGrades();
-            	for(Map.Entry<Student, Grade> entry : record.entrySet()) {
-            		if(entry.getKey().getId().equals(student.getValue().getId()))
-            			grade = entry.getValue();
-                }
+                grade = subject.getGrades().getOrDefault(student.getValue(), new Grade(student.getValue(), subject, Score.ZERO));
             } else {
                 Score score = subject.getScoreByStudent(student.getValue());
                 grade = new Grade(student.getValue(), subject, score);
             }
-
             scoreMap.put(subject.getLabel(), grade);
         }
     }
