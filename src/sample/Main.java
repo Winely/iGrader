@@ -1,6 +1,5 @@
 package sample;
 
-import Database.DAO;
 import Model.Course;
 import Model.Subject;
 import View.pages.LoginPanel;
@@ -8,7 +7,6 @@ import View.pages.MainPanel;
 import View.pages.NewCourse;
 import View.pages.SettingsPanel;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -17,7 +15,6 @@ import javafx.stage.Stage;
 
 import java.io.*;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main extends Application {
@@ -91,6 +88,11 @@ public class Main extends Application {
                 window.setScene(new Scene(current));
                 break;
         }
+    }
+
+    public static void courseAdded(Course course){
+        handle(LOGIN);
+        mainPanel.selectClass(course);
     }
 
     public static void main(String[] args) {

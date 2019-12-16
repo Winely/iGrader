@@ -7,13 +7,14 @@ import Model.Subject;
 
 public class CourseController {
 
-    public void createNewCourse(String label, Subject template) {
+    public Course createNewCourse(String label, Subject template) {
         Course course = new Course();
         Subject newSubject = template.duplicateSubject();
         newSubject.setLabel(label);
         newSubject.update();
         course.setScheme(newSubject);
         course.save();
+        return course;
     }
 
     public void addSection(Course course) {
