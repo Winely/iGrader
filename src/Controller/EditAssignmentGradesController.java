@@ -39,12 +39,12 @@ public class EditAssignmentGradesController {
     @FXML
     private void onEditPoints(CellEditEvent<Record,String> pointsCellEdited) {
         Record record = recordTable.getSelectionModel().getSelectedItem();
-        record.setPoints(Double.valueOf(pointsCellEdited.getNewValue()));
+        record.setPoints(Double.parseDouble(pointsCellEdited.getNewValue()));
     }
     @FXML
     private void onEditBonus(CellEditEvent<Record,String> bonusCellEdited){
         Record record = recordTable.getSelectionModel().getSelectedItem();
-        record.setBonus(Double.valueOf(bonusCellEdited.getNewValue()));
+        record.setBonus(Double.parseDouble(bonusCellEdited.getNewValue()));
     }
 
     @FXML

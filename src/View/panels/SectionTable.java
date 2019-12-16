@@ -193,17 +193,9 @@ public class SectionTable extends TableView<SectionEntry> {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getClickCount() == 2) {
-                    ObservableList<TablePosition> cells = getSelectionModel().getSelectedCells();
-
-                    int subId = 0;
-                    for (Subject sub: scheme.getChildren()) {
-                        String label = sub.getLabel();
-                        System.out.println(label);
-
-                        if(label.equals(getSelectionModel().getSelectedCells().get(0).getTableColumn().getGraphic().getProperties().get("Label")) )
-                            subId = sub.getId();
-                    }
-                    Subject subject = new DAO().findById(Subject.class, subId);
+                    Subject subject = scheme.getChildren().get(
+                            getSelectionModel().getSelectedCells().get(0).getColumn() - 1
+                    );
                     if (subject.getChildren().size() > 0) {
                         openAssignmentChildren(section, subject);
                     } else {
@@ -220,7 +212,7 @@ public class SectionTable extends TableView<SectionEntry> {
                         Main.setFxmlPane(page);
                         Main.handle(Main.INDIVIDUALGRADE);
                         EditIndividualGradeController controller = loader.getController();
-                        controller.setSubject(subId,getSelectionModel().getSelectedItem().getStudent().getId());
+                        controller.setSubject(subject, getSelectionModel().getSelectedItem().getStudent());
                         controller.setDialogStage(Main.getStage());
                     }
                 }
