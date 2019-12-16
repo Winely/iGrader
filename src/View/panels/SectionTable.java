@@ -162,6 +162,7 @@ public class SectionTable extends TableView<SectionEntry> {
             columns.add(subCol);
         }
 
+        
         TableColumn<SectionEntry, Double> finalGrade = new TableColumn<>("Final Grade");
         finalGrade.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().scheme.getFinalScoreByStudent(param.getValue().getStudent()).getPoint()));
 
