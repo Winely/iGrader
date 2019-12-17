@@ -114,4 +114,14 @@ public class DAO {
         session.close();
         return result;
     }
+
+    public <E> void saveMany(List<E> list){
+        Session session = getSession();
+        Transaction tx = session.beginTransaction();
+        for (E e : list) {
+            session.save(e);
+        }
+        tx.commit();
+        session.close();
+    }
 }

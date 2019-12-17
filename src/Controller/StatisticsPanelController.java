@@ -52,7 +52,7 @@ public class StatisticsPanelController implements Initializable{
 		
 		boolean type;
 		ObservableList<Statistic> list = FXCollections.observableArrayList();
-		
+
 		// Get tab selection
 		int selectedTab = tabPane.getSelectionModel().getSelectedIndex();
 		
@@ -70,9 +70,9 @@ public class StatisticsPanelController implements Initializable{
 
 		// Loop through the different categories
 		for(Subject subject : scheme.getChildren()) {
-			list.add(getStatisticBySubject(subject.getLabel(), subject, filteredStudents));
+			list.add(getStatisticBySubject(subject.getLabel(), subject, filteredStudents, false));
 		}
-		list.add(getStatisticBySubject("Total", scheme, filteredStudents));
+		list.add(getStatisticBySubject("Total", scheme, filteredStudents, true));
 
 		// Set table factories
 		table.setItems(list);
@@ -87,13 +87,13 @@ public class StatisticsPanelController implements Initializable{
 		
 	}
 
-	private Statistic getStatisticBySubject(String label, Subject subject, List<Student> students){
+	private Statistic getStatisticBySubject(String label, Subject subject, List<Student> students, boolean total){
 		List<Double> subjectGrades = new ArrayList<>();
 		double subjectSum = 0.0;
 		double count = 0.0;
 
 		for(Student student : students) {
-			Score score = subject.getScoreByStudent(student);
+			Score score = total ? subject.getFinalScoreByStudent(student) : subject.getScoreByStudent(student);
 			subjectGrades.add((score.getPoint() + score.getBonus()/(subject.getMaxScore().getPoint())));
 			subjectSum = subjectSum + (score.getPoint() + score.getBonus()/(subject.getMaxScore().getPoint()));
 			count += 1;

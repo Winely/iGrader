@@ -6,6 +6,7 @@ import java.util.Map;
 
 import Database.DAO;
 import Model.*;
+import View.pages.AssignmentChildrenGrades;
 import View.panels.SectionTable;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -21,6 +22,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.Main;
 
@@ -59,6 +61,7 @@ public class EditAssignmentGradesController {
 
     private Stage dialogStage;
     private Subject subject;
+    private Section section;
     private ObservableList<Record> recordData = FXCollections.observableArrayList();;
     private ObservableList<Record> realData = FXCollections.observableArrayList();;
 
@@ -119,7 +122,7 @@ public class EditAssignmentGradesController {
     }
     @FXML
     private void pressBack() {
-        Main.handle(Main.UPDATE);
+        navBack(subject, section);
     }
 
     @FXML
@@ -167,12 +170,11 @@ public class EditAssignmentGradesController {
         }
         subject.setComment(commentsArea.getText());
         subject.update();
-        Main.handle(Main.UPDATE);
+        navBack(subject, section);
 
     }
 
-    public void setSubject(Subject subject, Section section) {
-    	this.subject = subject;
+
         List<Student> included = new ArrayList<Student>();
         Map<Student, Grade> record = subject.getGrades();
         System.out.println(included);
@@ -203,6 +205,10 @@ public class EditAssignmentGradesController {
         recordTable.setItems(recordData);
         showStudentInformation();
 
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
     }
 
     public void showStudentInformation() {

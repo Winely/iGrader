@@ -126,7 +126,7 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
             Main.setFxmlPane(page);
             Main.handle(Main.STUDENT_COMMENT);
             StudentInformationController controller = loader.getController();
-            controller.setStudentId(sectionTable.getSelectionModel().getSelectedItem().getStudent().getId());
+            controller.setStudentId(sectionTable.getSelectionModel().getSelectedItem().getStudent());
             controller.setDialogStage(Main.getStage());
         } else if (event.getSource() == withdraw) {
             withdrawStudent();

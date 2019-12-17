@@ -1,5 +1,8 @@
 package Controller;
 
+import Database.DAO;
+import Model.*;
+import View.pages.AssignmentChildrenGrades;
 import Model.Grade;
 import Model.Score;
 import Model.Student;
@@ -10,6 +13,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sample.Main;
 
@@ -30,6 +34,7 @@ public class EditIndividualGradeController {
 
     private int gradeWay = 1;
     private Subject subject;
+    private Section section;
     private Student student;
     private Stage dialogStage;
 
@@ -67,7 +72,7 @@ public class EditIndividualGradeController {
 
     @FXML
     private void pressBack() {
-        Main.handle(Main.UPDATE);
+        navBack(subject, section);
     }
 
     @FXML
@@ -106,12 +111,26 @@ public class EditIndividualGradeController {
         else grade.update();
         subject.refresh();
         Main.handle(Main.UPDATE);
+
+        navBack(subject, section);
+    }
+
+    private static void navBack(Subject subject, Section section) {
+        if (subject.getParent().getParent() == null) {
+            Main.handle(Main.UPDATE);
+        } else {
+            Main.window.setScene(new AssignmentChildrenGrades(new BorderPane(), section, subject.getParent()));
+        }
     }
 
     public void setSubject(Subject subject, Student student) {
         this.subject = subject;
         this.student = student;
         showStudentInformation();
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
     }
 
     private boolean isInputValid() {

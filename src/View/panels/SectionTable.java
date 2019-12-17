@@ -5,6 +5,8 @@ import Database.DAO;
 import Model.*;
 
 import View.pages.AssignmentChildrenGrades;
+import com.sun.javafx.scene.control.skin.LabeledText;
+//import com.sun.javafx.scene.control.LabeledText;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -27,8 +29,6 @@ import sample.Main;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
-
-import com.sun.javafx.scene.control.skin.LabeledText;
 
 public class SectionTable extends TableView<SectionEntry> {
 
@@ -60,7 +60,6 @@ public class SectionTable extends TableView<SectionEntry> {
                     if (item == null) {
                         return;
                     }
-                    item.refresh();
                     setText( item.toString() );
                     setTooltip(new Tooltip(item.getComment()));
                 }
@@ -123,6 +122,7 @@ public class SectionTable extends TableView<SectionEntry> {
                             EditAssignmentGradesController controller = loader.getController();
                             controller.setSubject(match,section);
                             controller.setDialogStage(Main.getStage());
+                            controller.setSection(section);
                         }
                     }
                 } else if(((Node)event.getTarget()).getProperties().get("Label") != null) {
@@ -151,6 +151,7 @@ public class SectionTable extends TableView<SectionEntry> {
                             EditAssignmentGradesController controller = loader.getController();
                             controller.setSubject(match,section);
                             controller.setDialogStage(Main.getStage());
+                            controller.setSection(section);
                         }
                     }
                 }
@@ -160,12 +161,22 @@ public class SectionTable extends TableView<SectionEntry> {
             columns.add(subCol);
         }
 
-        
-        TableColumn<SectionEntry, Double> finalGrade = new TableColumn<>("Final Grade");
-        finalGrade.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().scheme.getFinalScoreByStudent(param.getValue().getStudent()).getPoint()));
+        TableColumn<SectionEntry, String> finalGrade = new TableColumn<>("Final Grade");
+        finalGrade.setCellValueFactory(param -> {
+            double score = param.getValue().scheme.getFinalScoreByStudent(param.getValue().getStudent()).getPoint() * 100;
+            score = Math.round(score) / 100;
+            String scoreStr = Double.toString(score);
+            return new ReadOnlyObjectWrapper<>(scoreStr);
+        });
 
-        TableColumn<SectionEntry, Double> finalBonus = new TableColumn<>("Final Bonus");
-        finalBonus.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue().scheme.getFinalScoreByStudent(param.getValue().getStudent()).getBonus()));
+        TableColumn<SectionEntry, String> finalBonus = new TableColumn<>("Final Bonus");
+        finalBonus.setCellValueFactory(param -> {
+            double score = param.getValue().scheme.getFinalScoreByStudent(param.getValue().getStudent()).getBonus() * 100;
+            score = Math.round(score) / 100;
+            String scoreStr = Double.toString(score);
+            return new ReadOnlyObjectWrapper<>(scoreStr);
+        });
+
         columns.add(finalGrade);
         columns.add(finalBonus);
 
@@ -213,6 +224,7 @@ public class SectionTable extends TableView<SectionEntry> {
                         EditIndividualGradeController controller = loader.getController();
                         controller.setSubject(subject, getSelectionModel().getSelectedItem().getStudent());
                         controller.setDialogStage(Main.getStage());
+                        controller.setSection(section);
                     }
                 }
             }
