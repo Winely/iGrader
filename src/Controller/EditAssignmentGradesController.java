@@ -182,8 +182,10 @@ public class EditAssignmentGradesController {
         }
     }
 
-    public void setSubject(int subjectID, Section section) {
-        subject = new DAO().findById(Subject.class, subjectID);
+
+    public void setSubject(Subject subject, Section section) {
+        this.subject = subject;
+        this.section = section;
         List<Student> included = new ArrayList<Student>();
         Map<Student, Grade> record = subject.getGrades();
         System.out.println(included);
