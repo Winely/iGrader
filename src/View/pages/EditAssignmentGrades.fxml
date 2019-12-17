@@ -12,11 +12,11 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EditAssignmentGradesController">
     <children>
-        <Label layoutX="14.0" layoutY="43.0" text="Assignment:">
+        <Label layoutX="14.0" layoutY="43.0" prefHeight="25.0" prefWidth="89.0" text="Assignment:">
          <font>
             <Font size="16.0" />
          </font></Label>
-        <Label fx:id="assignmentLabel" layoutX="108.0" layoutY="45.0" prefHeight="25.0" prefWidth="79.0" text="Label">
+        <Label fx:id="assignmentLabel" layoutX="111.0" layoutY="44.0" prefHeight="25.0" prefWidth="89.0" text="Label">
          <font>
             <Font size="16.0" />
          </font></Label>
@@ -24,11 +24,11 @@
          <font>
             <Font size="16.0" />
          </font></Label>
-        <Label layoutX="14.0" layoutY="72.0" text="Max Score:">
+        <Label layoutX="17.0" layoutY="80.0" prefHeight="27.0" prefWidth="89.0" text="Max Score:">
          <font>
             <Font size="16.0" />
          </font></Label>
-        <Label fx:id="maxscoreLabel" layoutX="103.0" layoutY="71.0" prefHeight="27.0" prefWidth="79.0" text="Label">
+        <Label fx:id="maxscoreLabel" layoutX="111.0" layoutY="79.0" prefHeight="27.0" prefWidth="89.0" text="Label">
          <font>
             <Font size="16.0" />
          </font></Label>
