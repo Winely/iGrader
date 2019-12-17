@@ -122,7 +122,6 @@ public class SectionTable extends TableView<SectionEntry> {
                             EditAssignmentGradesController controller = loader.getController();
                             controller.setSubject(match,section);
                             controller.setDialogStage(Main.getStage());
-                            controller.setSection(section);
                         }
                     }
                 } else if(((Node)event.getTarget()).getProperties().get("Label") != null) {
@@ -151,7 +150,6 @@ public class SectionTable extends TableView<SectionEntry> {
                             EditAssignmentGradesController controller = loader.getController();
                             controller.setSubject(match,section);
                             controller.setDialogStage(Main.getStage());
-                            controller.setSection(section);
                         }
                     }
                 }

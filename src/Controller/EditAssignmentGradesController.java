@@ -174,7 +174,17 @@ public class EditAssignmentGradesController {
 
     }
 
+    private static void navBack(Subject subject, Section section) {
+        if (subject.getParent().getParent() == null) {
+            Main.handle(Main.UPDATE);
+        } else {
+            Main.window.setScene(new AssignmentChildrenGrades(new BorderPane(), section, subject.getParent()));
+        }
+    }
 
+    public void setSubject(Subject subject, Section section) {
+    	this.subject = subject;
+    	this.section = section;
         List<Student> included = new ArrayList<Student>();
         Map<Student, Grade> record = subject.getGrades();
         System.out.println(included);
