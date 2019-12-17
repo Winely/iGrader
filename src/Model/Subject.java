@@ -28,14 +28,13 @@ public class Subject extends BaseEntity implements Commentable{
             if (grade == null) {
                 return new Score(0, 0);
             }
-            return grade.getScore()
-                    .times(10000/(maxScore.getPoint())/(maxScore.getPoint()));
+            return grade.getScore().times(100/maxScore.getPoint());
         }
         return children.stream()
                 .map(child -> child.getScoreByStudent(student).times(child.getWeight()/100))
                 .reduce(Score::addScore)
                 .orElse(Score.ZERO)
-                .times(10000/(maxScore.getPoint())/(maxScore.getPoint()));
+                .times(100/maxScore.getPoint());
     }
 
     public Score getFinalScoreByStudent(Student student){

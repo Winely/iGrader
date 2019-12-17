@@ -46,13 +46,13 @@ public class NewCourse extends Scene {
     private void pressConfirm(ActionEvent event) {
         Course selected = classSelect.getValue();
         String name = courseName.getText();
+        Course newCourse;
         if (selected == null) {
-            courseController.createNewCourse(name, new Subject());
-            Main.handle(Main.LOGIN);
+            newCourse = courseController.createNewCourse(name, new Subject());
         } else {
-            courseController.createNewCourse(name, selected.getScheme());
-            Main.handle(Main.LOGIN);
+            newCourse = courseController.createNewCourse(name, selected.getScheme());
         }
+        Main.courseAdded(newCourse);
     }
 
     private void pressBack(ActionEvent event) {

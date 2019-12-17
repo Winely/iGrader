@@ -14,7 +14,7 @@
             <TableView fx:id="table" editable="true" onMouseClicked="#listSelection" prefHeight="242.0" prefWidth="405.0">
               <columns>
                 <TableColumn fx:id="components" onEditCommit="#saveTable" prefWidth="120.00006103515625" text="Components" />
-                <TableColumn fx:id="weight" onEditCommit="#saveTable" prefWidth="97.5999755859375" text="Weight" />
+                <TableColumn fx:id="weight" onEditCommit="#saveTable" prefWidth="97.5999755859375" text="Weight (%)" />
                   <TableColumn fx:id="maxScore" onEditCommit="#saveTable" prefWidth="91.20001220703125" text="Max Score" />
                   <TableColumn fx:id="maxBonus" onEditCommit="#saveTable" prefWidth="97.60003662109375" text="Max Bonus" />
               </columns>

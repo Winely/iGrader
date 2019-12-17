@@ -1,12 +1,11 @@
-package Panels;
+package View.panels;
 
 import Model.Subject;
-import javafx.fxml.FXML;
+import Controller.SchemeEditPanelController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javax.persistence.*;
 
 public class SchemeEditPanel extends Stage{
 	

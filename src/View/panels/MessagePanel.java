@@ -1,10 +1,10 @@
-package Panels;
+package View.panels;
 
+import Controller.MessagePanelController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javax.persistence.*;
 
 public class MessagePanel {
 

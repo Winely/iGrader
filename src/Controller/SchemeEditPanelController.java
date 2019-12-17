@@ -1,17 +1,16 @@
-package Panels;
+package Controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.*;
 
 import Database.DAO;
-import Model.Score;
+import Model.RowData;
 import Model.Subject;
-import Model.Course;
-import javafx.beans.property.*;
+import View.panels.MessagePanel;
+import View.panels.SchemeEditPanel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -20,10 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.stage.Stage;
 import sample.Main;
-
-import javax.persistence.*;
 
 public class SchemeEditPanelController implements Initializable{
 	
@@ -33,7 +29,7 @@ public class SchemeEditPanelController implements Initializable{
 	private List<Subject> deleteList;
 	
 	// Constructor
-	SchemeEditPanelController(Subject scheme){
+	public SchemeEditPanelController(Subject scheme){
 		this.scheme = scheme;
 	}
 	
@@ -50,6 +46,7 @@ public class SchemeEditPanelController implements Initializable{
 	// Initialize panel
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		scheme.refresh();
 		textLabel.setText("Editing grading scheme for " + scheme.getLabel() +
 				".\nPlease ensure all component weights add up to 100.");
 		
@@ -224,9 +221,9 @@ public class SchemeEditPanelController implements Initializable{
 	    	scheme.getChildren().get(selectedRow).setLabel(newEntry);
 	    }
 	    // Edit component weight
-	    else if(column.matches("Weight")){
+	    else if(column.equals("Weight (%)")){
 	    	try {
-	    		scheme.getChildren().get(selectedRow).setWeight(Double.valueOf(newEntry));
+	    		scheme.getChildren().get(selectedRow).setWeight(Double.parseDouble(newEntry));
 	    	} 
 	    	catch(Exception e){
 	    		MessagePanel message = new MessagePanel("Invalid Entry.");
@@ -235,7 +232,7 @@ public class SchemeEditPanelController implements Initializable{
 	    // Edit component max score allowance
 	    else if(column.matches("Max Score")){
 	    	try {
-	    		scheme.getChildren().get(selectedRow).getMaxScore().setPoint(Double.valueOf(newEntry));
+	    		scheme.getChildren().get(selectedRow).getMaxScore().setPoint(Double.parseDouble(newEntry));
 	    	} 
 	    	catch(Exception e){
 	    		MessagePanel message = new MessagePanel("Invalid Entry.");
@@ -244,7 +241,7 @@ public class SchemeEditPanelController implements Initializable{
 	    // Edit component max bonus allowance
 		else if(column.matches("Max Bonus")){
 			try {
-				scheme.getChildren().get(selectedRow).getMaxScore().setBonus(Double.valueOf(newEntry));
+				scheme.getChildren().get(selectedRow).getMaxScore().setBonus(Double.parseDouble(newEntry));
 	    	} 
 	    	catch(Exception e){
 	    		MessagePanel message = new MessagePanel("Invalid Entry.");

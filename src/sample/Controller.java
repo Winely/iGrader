@@ -1,17 +1,11 @@
 package sample;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Database.DAO;
 import Model.Course;
-import Model.Name;
-import Model.Score;
 import Model.Section;
-import Model.Student;
 import Model.Subject;
-import Panels.SchemeEditPanel;
-import Panels.StatisticsPanel;
+import View.panels.SchemeEditPanel;
+import View.panels.StatisticsPanel;
 
 public class Controller {
 	

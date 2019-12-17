@@ -3,8 +3,7 @@ package View.pages;
 import Controller.CourseController;
 import Model.*;
 import Model.Course;
-import Panels.SchemeEditPanel;
-import Panels.StatisticsPanel;
+import View.panels.SchemeEditPanel;
 import View.components.ClassSelect;
 import View.panels.SectionTabContent;
 import javafx.event.ActionEvent;
@@ -70,7 +69,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
     }
 
     private ToolBar createClassToolbar() {
-        if (classSelect.getValue() != null) {
+        if (classSelect.getValue() == null) {
             return null;
         }
         ToolBar bottom = new ToolBar();
@@ -80,6 +79,11 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
 
     private static void openEditPanel(Subject subject) {
         new SchemeEditPanel(subject);
+    }
+
+    public void selectClass(Course course){
+        classSelect.setValue(course);
+        handle(new ActionEvent(classSelect, null));
     }
 
     @Override
@@ -95,6 +99,7 @@ public class MainPanel extends Scene implements EventHandler<ActionEvent>{
             alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
                 CourseController.removeCourse(classSelect.getValue());
+                Main.handle(Main.LOGIN);
             } else {
                 event.consume();
             }

@@ -1,19 +1,22 @@
 package View.panels;
 
+import Controller.AddStudentController;
 import Controller.ImportStudentController;
+import Controller.StudentInformationController;
 import Database.DAO;
 import Model.Section;
 import Model.Student;
-import Panels.StatisticsPanel;
-import View.pages.MainPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import sample.Main;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class SectionTabContent extends BorderPane implements EventHandler<ActionEvent> {
@@ -42,7 +45,7 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
         withdraw.setOnAction(this);
         importBtn.setOnAction(this);
         stats.setOnAction(this);
-        sectionTable = new SectionTable(this.section);
+        sectionTable = new SectionTable(this.section, this.section.getCourse().getScheme());
         setupTabContent();
     }
 
@@ -91,12 +94,40 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
     @Override
     public void handle(ActionEvent event) {
         if (event.getSource() == addStudent) {
-            System.out.println("addStudent");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("View/pages/AddStudent.fxml"));
+            AnchorPane page;
+            try {
+                page = (AnchorPane) loader.load();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                page = null;
+            }
+            Main.setFxmlPane(page);
+            Main.handle(Main.NEW_STUDENT);
+            AddStudentController controller = loader.getController();
+            controller.setSection(section);
+            controller.setDialogStage(Main.getStage());
         } else if (event.getSource() == removeStudent) {
             removeStudent();
             Main.handle(Main.UPDATE);
         } else if (event.getSource() == comment) {
-            System.out.println("comment");
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getClassLoader().getResource("View/pages/StudentInformation.fxml"));
+            AnchorPane page;
+            try {
+                page = (AnchorPane) loader.load();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+                page = null;
+            }
+            Main.setFxmlPane(page);
+            Main.handle(Main.STUDENT_COMMENT);
+            StudentInformationController controller = loader.getController();
+            controller.setStudentId(sectionTable.getSelectionModel().getSelectedItem().getStudent());
+            controller.setDialogStage(Main.getStage());
         } else if (event.getSource() == withdraw) {
             withdrawStudent();
             Main.handle(Main.UPDATE);
@@ -105,7 +136,6 @@ public class SectionTabContent extends BorderPane implements EventHandler<Action
             Main.handle(Main.UPDATE);
         } else if (event.getSource() == stats) {
             openStats(section);
-            System.out.println("stats");
         }
     }
 }

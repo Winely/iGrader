@@ -64,6 +64,8 @@ public class Grade extends BaseEntity implements Commentable{
 
     @Override
     public String toString() {
-        return Double.toString(score.getPoint());
+        double score = this.score.getPoint() * 100;
+        score = Math.round(score) / 100;
+        return Double.toString(score);
     }
 }
