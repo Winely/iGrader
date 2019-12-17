@@ -8,15 +8,31 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EditAssignmentGradesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.EditAssignmentGradesController">
     <children>
-        <Label layoutX="39.0" layoutY="43.0" text="Assignment:" />
-        <Label fx:id="assignmentLabel" layoutX="113.0" layoutY="43.0" text="Label" />
-        <Label layoutX="178.0" layoutY="43.0" text="How is this grade calculated?" />
-        <Label layoutX="39.0" layoutY="70.0" text="Max Score:" />
-        <Label fx:id="maxscoreLabel" layoutX="113.0" layoutY="70.0" text="Label" />
-        <TableView fx:id="recordTable" layoutX="41.0" layoutY="100.0" prefHeight="130.0" prefWidth="300.0" stylesheets="@layout.css">
+        <Label layoutX="14.0" layoutY="43.0" text="Assignment:">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+        <Label fx:id="assignmentLabel" layoutX="108.0" layoutY="45.0" prefHeight="25.0" prefWidth="79.0" text="Label">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+        <Label layoutX="211.0" layoutY="44.0" prefHeight="48.0" prefWidth="292.0" text="How is this grade calculated?">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+        <Label layoutX="14.0" layoutY="72.0" text="Max Score:">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+        <Label fx:id="maxscoreLabel" layoutX="103.0" layoutY="71.0" prefHeight="27.0" prefWidth="79.0" text="Label">
+         <font>
+            <Font size="16.0" />
+         </font></Label>
+        <TableView fx:id="recordTable" layoutX="105.0" layoutY="144.0" prefHeight="171.0" prefWidth="381.0" stylesheets="@layout.css">
             <columns>
                 <TableColumn fx:id="nameColumn" prefWidth="75.0" sortable="false" text="Student Name" />
                 <TableColumn fx:id="gradeColumn" onEditCommit="#onEditPoints" prefWidth="75.0" sortable="false" text="Grade" />
@@ -26,15 +42,18 @@
                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
             </columnResizePolicy>
         </TableView>
-        <Label layoutX="41.0" layoutY="263.0" text="Comments:" />
-        <TextArea fx:id="commentsArea" layoutX="113.0" layoutY="253.0" prefHeight="80.0" prefWidth="222.0" />
-        <Button layoutX="309.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleSave" text="Save" />
-        <RadioButton layoutX="148.0" layoutY="70.0" mnemonicParsing="false" onAction="#percentWay" text="Percent">
+        <Label layoutX="42.0" layoutY="315.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="27.0" prefWidth="138.0" text="Comments:">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+        <TextArea fx:id="commentsArea" layoutX="113.0" layoutY="352.0" prefHeight="145.0" prefWidth="381.0" />
+        <Button layoutX="460.0" layoutY="512.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="48.0" prefWidth="89.0" text="Save" />
+        <RadioButton layoutX="150.0" layoutY="114.0" mnemonicParsing="false" onAction="#percentWay" text="Percent">
             <toggleGroup>
                 <ToggleGroup fx:id="gradeWay" />
             </toggleGroup></RadioButton>
-        <RadioButton layoutX="216.0" layoutY="70.0" mnemonicParsing="false" onAction="#lostWay" text="Points Lost" toggleGroup="$gradeWay" />
-        <RadioButton layoutX="302.0" layoutY="70.0" mnemonicParsing="false" onAction="#rawWay" selected="true" text="Raw Points" toggleGroup="$gradeWay" />
+        <RadioButton layoutX="256.0" layoutY="114.0" mnemonicParsing="false" onAction="#lostWay" text="Points Lost" toggleGroup="$gradeWay" />
+        <RadioButton layoutX="388.0" layoutY="114.0" mnemonicParsing="false" onAction="#rawWay" selected="true" text="Raw Points" toggleGroup="$gradeWay" />
         <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#pressBack" text="Back" />
     </children>
 </AnchorPane>
