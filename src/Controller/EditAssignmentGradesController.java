@@ -182,10 +182,10 @@ public class EditAssignmentGradesController {
         }
     }
 
-    public void setSubject(int subjectID, Section section) {
-        subject = new DAO().findById(Subject.class, subjectID);
+
+    public void setSubject(Subject subject, Section section) {
+//        subject = new DAO().findById(Subject.class, subjectID);
         List<Student> included = new ArrayList<Student>();
-        System.out.println(subject.getGrades());
         Map<Student, Grade> record = subject.getGrades();
         for(Map.Entry<Student, Grade> entry : record.entrySet()) {
         	if(!entry.getKey().isFrozen()) {
