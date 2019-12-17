@@ -44,13 +44,11 @@ public class StudentInformationController {
     public void setDialogStage(Stage dialogStage) {
         this.dialogStage = dialogStage;
     }
-    public void setStudentId(String ID) {
-        this.id = ID;
+    public void setStudentId(Student student) {
+        this.student = student;
         showStudentInformation();
     }
     public void showStudentInformation() {
-        DAO dao = new DAO();
-        student = dao.findById(Student.class, id);
         nameLabel.setText(student.getName().getFirstName()+student.getName().getMidName()+student.getName().getLastName());
         idLabel.setText(student.getId());
         commentArea.setText(student.getComment());

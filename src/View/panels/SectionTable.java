@@ -6,6 +6,7 @@ import Model.*;
 
 import View.pages.AssignmentChildrenGrades;
 import com.sun.javafx.scene.control.skin.LabeledText;
+//import com.sun.javafx.scene.control.LabeledText;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.BooleanProperty;
@@ -59,7 +60,6 @@ public class SectionTable extends TableView<SectionEntry> {
                     if (item == null) {
                         return;
                     }
-                    item.refresh();
                     setText( item.toString() );
                     setTooltip(new Tooltip(item.getComment()));
                 }
