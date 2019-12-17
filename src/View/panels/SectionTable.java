@@ -96,18 +96,17 @@ public class SectionTable extends TableView<SectionEntry> {
 
             makeHeader(subCol, label);
             EventHandler<? super MouseEvent> handler = event -> {
-                int subId = -1;
-                if(event.getTarget().getClass() == LabeledText.class&&((Text)event.getTarget()).getText() != null) {
+                Subject match = null;
+                if(event.getTarget().getClass() == LabeledText.class&&((LabeledText)event.getTarget()).getText() != null) {
                     for (Subject subject: scheme.getChildren()) {
                         String sublabel = subject.getLabel();
 
                         if(sublabel.equals(((Text)event.getTarget()).getText()))
-                            subId = subject.getId();
+                            match = subject;
                     }
-                    if(subId != -1) {
-                        Subject subject = new DAO().findById(Subject.class, subId);
-                        if (subject.getChildren().size() > 0) {
-                            openAssignmentChildren(section, subject);
+                    if(match != null) {
+                        if (match.getChildren().size() > 0) {
+                            openAssignmentChildren(section, match);
                         } else {
                             FXMLLoader loader = new FXMLLoader();
                             loader.setLocation(getClass().getClassLoader().getResource("View/pages/EditAssignmentGrades.fxml"));
@@ -122,7 +121,7 @@ public class SectionTable extends TableView<SectionEntry> {
                             Main.setFxmlPane(page);
                             Main.handle(Main.ASSIGNMENTGRADES);
                             EditAssignmentGradesController controller = loader.getController();
-                            controller.setSubject(subId,section);
+                            controller.setSubject(match,section);
                             controller.setDialogStage(Main.getStage());
                         }
                     }
@@ -131,12 +130,11 @@ public class SectionTable extends TableView<SectionEntry> {
                         String sublabel = subject.getLabel();
 
                         if(sublabel.equals(((Node)event.getTarget()).getProperties().get("Label")))
-                            subId = subject.getId();
+                        	match = subject;
                     }
-                    if(subId != 1) {
-                        Subject subject = new DAO().findById(Subject.class, subId);
-                        if (subject.getChildren().size() > 0) {
-                            openAssignmentChildren(section, subject);
+                    if(match != null) {
+                        if (match.getChildren().size() > 0) {
+                            openAssignmentChildren(section, match);
                         } else {
                             FXMLLoader loader = new FXMLLoader();
                             loader.setLocation(getClass().getClassLoader().getResource("View/pages/EditAssignmentGrades.fxml"));
@@ -151,7 +149,7 @@ public class SectionTable extends TableView<SectionEntry> {
                             Main.setFxmlPane(page);
                             Main.handle(Main.ASSIGNMENTGRADES);
                             EditAssignmentGradesController controller = loader.getController();
-                            controller.setSubject(subId,section);
+                            controller.setSubject(match,section);
                             controller.setDialogStage(Main.getStage());
                         }
                     }
