@@ -1,7 +1,6 @@
 package View.panels;
 import Controller.EditAssignmentGradesController;
 import Controller.EditIndividualGradeController;
-import Database.DAO;
 import Model.*;
 
 import View.pages.AssignmentChildrenGrades;
@@ -24,7 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import sample.Main;
+import View.Main;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -13,7 +13,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
-import sample.Main;
+import View.Main;
 
 import java.io.File;
 import java.io.IOException;

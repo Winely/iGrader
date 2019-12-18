@@ -10,7 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import sample.Main;
+import View.Main;
 
 public class NewCourse extends Scene {
     private CourseController courseController = new CourseController();

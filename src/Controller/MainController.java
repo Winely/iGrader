@@ -1,4 +1,4 @@
-package sample;
+package Controller;
 
 import Database.DAO;
 import Model.Course;
@@ -7,7 +7,7 @@ import Model.Subject;
 import View.panels.SchemeEditPanel;
 import View.panels.StatisticsPanel;
 
-public class Controller {
+public class MainController {
 	
 	public void openSchemeEditPanel() {
 		DAO dao = new DAO();

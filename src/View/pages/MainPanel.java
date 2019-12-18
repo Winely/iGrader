@@ -12,7 +12,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import sample.Main;
+import View.Main;
 
 
 public class MainPanel extends Scene implements EventHandler<ActionEvent>{

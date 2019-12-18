@@ -5,7 +5,7 @@ import Model.Course;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
-import sample.Main;
+import View.Main;
 
 import java.util.List;
 

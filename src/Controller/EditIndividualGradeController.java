@@ -1,6 +1,5 @@
 package Controller;
 
-import Database.DAO;
 import Model.*;
 import View.pages.AssignmentChildrenGrades;
 import Model.Grade;
@@ -15,7 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import sample.Main;
+import View.Main;
 
 
 public class EditIndividualGradeController {

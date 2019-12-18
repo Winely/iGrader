@@ -1,4 +1,4 @@
-package sample;
+package View;
 
 import Model.Course;
 import Model.Subject;

@@ -1,13 +1,11 @@
 package Controller;
 
-import Database.DAO;
-import Model.Name;
 import Model.Student;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.stage.Stage;
-import sample.Main;
+import View.Main;
 
 public class StudentInformationController {
     @FXML

@@ -9,8 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
-import sample.Main;
+import View.Main;
 
 public class AssignmentChildrenGrades extends Scene implements EventHandler<ActionEvent> {
 
